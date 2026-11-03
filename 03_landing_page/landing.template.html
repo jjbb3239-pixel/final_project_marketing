@@ -305,6 +305,23 @@
     /* 모바일 하단 CTA: 히어로를 지나면 조용히 나타나고, 신청 섹션이 보이면 사라짐 */
     .sticky-cta { display: none; }
 
+    /* PC 플로팅 CTA: 위치는 스크립트가 스크롤에 맞춰 transform으로 계산 (CSS transition 없이 그대로 따라감) */
+    .float-cta {
+      position: fixed; left: 0; top: 0; z-index: 35; visibility: hidden; opacity: 0; will-change: transform;
+      transition: opacity .25s, box-shadow .3s, background-color .2s;
+    }
+    .float-cta.show { visibility: visible; opacity: 1; }
+    .float-cta.docked { box-shadow: 0 18px 44px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.12); }
+    .float-cta.show.away { opacity: 0; pointer-events: none; }
+    @media (max-width: 760px), (pointer: coarse) { .float-cta { display: none; } }
+
+    /* 가벼운 숫자 모자이크 (모바일·WebGPU 미지원) */
+    .mosaic { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; display: block; }
+    @media (pointer: coarse) {
+      /* 터치 기기는 움직이는 캔버스 위 배경 흐림(backdrop-filter)이 무거워서 반투명 배경만 */
+      .hero-photo { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(18,18,20,.72); }
+    }
+
     @media (max-width: 860px) {
       .split { grid-template-columns: 1fr; gap: 16px; }
       .side-label { padding-top: 0; }
@@ -511,6 +528,10 @@
   <a class="pill sticky-cta cta" data-cta-location="sticky" aria-hidden="true" tabindex="-1"
      href="https://fireclub.liveklass.com/classes/274558" target="_blank" rel="noopener"><span data-slot="apply.cta">강의 자세히 보기</span><span class="pill-arrow" aria-hidden="true">↗</span></a>
 
+  <!-- PC 플로팅 CTA: 히어로 CTA가 스크롤을 따라 오른쪽 아래로 스르륵 이동해 붙는 것처럼 보이게 하는 같은 모양의 버튼 -->
+  <a class="pill float-cta cta" data-cta-location="floating" aria-hidden="true" tabindex="-1"
+     href="https://fireclub.liveklass.com/classes/274558" target="_blank" rel="noopener"><span data-slot="hero.cta">1강 무료로 먼저 보기</span><span class="pill-arrow" aria-hidden="true">↗</span></a>
+
   <footer><div class="wrap foot-grid"><span>운영: <span data-slot="operator">계정명</span></span><span>문의: <span data-slot="contact">연락처</span></span><span>최종 업데이트: <time data-build="updated" datetime="2026-11-03">2026년 11월 3일</time></span></div></footer>
 
   <script>
@@ -563,6 +584,48 @@
         new IntersectionObserver(function (e) { applyIn = e[0].isIntersecting; upd(); }).observe(document.getElementById('apply'));
       }
 
+      // PC 플로팅 CTA: 히어로 CTA가 화면 위쪽에 닿는 순간부터 스크롤에 맞춰 오른쪽 아래로 이동해 붙음
+      // 시작 위치를 히어로 버튼의 현재 자리와 정확히 겹치게 해서 같은 버튼이 움직이는 것처럼 보이게 함
+      var heroBtn = document.querySelector('#hero .pill'), fl = document.querySelector('.float-cta');
+      if (heroBtn && fl) {
+        var desk = matchMedia('(min-width: 761px) and (pointer: fine)');
+        var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var HEADER = 76, RUN = 280, M = 32, docTop = 0, docLeft = 0, mainIn = false, ticking = false;
+        var measure = function () {
+          var hidden = heroBtn.style.visibility; heroBtn.style.visibility = '';
+          var r = heroBtn.getBoundingClientRect(); docTop = r.top + window.scrollY; docLeft = r.left;
+          heroBtn.style.visibility = hidden;
+        };
+        var ease = function (t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; };
+        var place = function () {
+          ticking = false;
+          if (!desk.matches) { fl.classList.remove('show'); heroBtn.style.visibility = ''; return; }
+          var p = Math.min(1, Math.max(0, (window.scrollY - (docTop - HEADER)) / RUN));
+          var on = p > 0;
+          heroBtn.style.visibility = on ? 'hidden' : '';
+          fl.classList.toggle('show', on);
+          fl.classList.toggle('away', on && mainIn);
+          fl.classList.toggle('docked', p >= 1);
+          var live = on && !mainIn;
+          fl.setAttribute('aria-hidden', live ? 'false' : 'true');
+          fl.tabIndex = live ? 0 : -1;
+          var k = calm ? (on ? 1 : 0) : ease(p);
+          var sx = docLeft, sy = docTop - window.scrollY;                          // 히어로 버튼이 있어야 할 자리
+          var ex = window.innerWidth - fl.offsetWidth - M, ey = window.innerHeight - fl.offsetHeight - M; // 정착 자리
+          fl.style.transform = 'translate(' + (sx + (ex - sx) * k).toFixed(1) + 'px,' + (sy + (ey - sy) * k).toFixed(1) + 'px)';
+        };
+        var req = function () { if (!ticking) { ticking = true; requestAnimationFrame(place); } };
+        measure(); place();
+        window.addEventListener('scroll', req, { passive: true });
+        window.addEventListener('resize', function () { measure(); req(); });
+        window.addEventListener('load', function () { measure(); req(); });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); req(); });
+        if ('IntersectionObserver' in window && document.getElementById('cta-main')) {
+          // 마지막 신청 버튼이 보이면 같은 버튼이 두 개 보이지 않게 잠시 숨김
+          new IntersectionObserver(function (e) { mainIn = e[0].isIntersecting; req(); }).observe(document.getElementById('cta-main'));
+        }
+      }
+
       // 섹션 도달 → dataLayer(section_view), 섹션별 1회
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
@@ -600,17 +663,105 @@
     })();
   </script>
 
-  <!-- 인터랙션 2: 히어로 패널의 빛을 숫자 모자이크로 렌더링, 마우스 주변의 숫자가 밝아짐 (shaders.com 무료 컴포넌트)
+  <!-- 인터랙션 2-B: 가벼운 숫자 모자이크 (모바일·WebGPU 미지원용, 수 KB)
+       - 셰이더 대신 기본 canvas로 숫자 격자를 그림. 모든 휴대폰·앱 안 브라우저에서 같은 모습
+       - 스크롤하면 빛이 숫자 위를 지나가고, 손가락(또는 마우스)이 닿은 곳의 숫자가 밝아짐
+       - 패널이 화면에 보일 때만 그림(약 30fps), 동작 줄이기면 한 장면만 -->
+  <script>
+    (function () {
+      var started = false;
+      window.startMosaic = function () {
+        var panel = document.querySelector('.hero-panel');
+        if (started || !panel) return;
+        started = true;
+        var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var CH = '$8406952731. ';            // 밝은 칸 → 어두운 칸
+        var cv = document.createElement('canvas');
+        cv.className = 'mosaic'; cv.setAttribute('aria-hidden', 'true');
+        panel.insertBefore(cv, panel.firstChild);
+        var ctx = cv.getContext('2d');
+        var W, H, cell, lineH, cols, rows;
+        var light = { x: 0.5, y: 0.3 }, target = { x: 0.5, y: 0.3 }, touchUntil = 0, visible = true, last = 0;
+
+        function resize() {
+          var r = panel.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+          W = r.width; H = r.height;
+          cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          cell = W < 520 ? 15 : 19; lineH = cell * 1.3;
+          cols = Math.ceil(W / cell); rows = Math.ceil(H / lineH);
+          ctx.font = '500 ' + Math.round(cell * 0.82) + 'px ui-monospace, Menlo, Consolas, monospace';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        }
+        function bright(u, v, t) {
+          // 위에서 내려오는 빛줄기 + 움직이는 빛(스크롤·터치)
+          var dx = u - 0.5, dy = v + 0.25, ang = Math.atan2(dx, dy);
+          var ray = 0.5 + 0.5 * Math.sin(ang * 13 + t * 0.35) * Math.sin(ang * 5 - t * 0.2);
+          var fall = Math.max(0, 1 - v * 0.95);
+          var d = Math.hypot((u - light.x) * W / H, v - light.y);
+          var spot = Math.max(0, 1 - d / 0.42);
+          return Math.min(1, 0.14 * fall + 0.32 * ray * fall * fall + 0.9 * spot * spot);
+        }
+        function draw(t) {
+          ctx.fillStyle = '#0a0a0b'; ctx.fillRect(0, 0, W, H);
+          for (var r = 0; r < rows; r++) {
+            for (var c = 0; c < cols; c++) {
+              var b = bright((c + 0.5) / cols, (r + 0.5) / rows, t);
+              if (b < 0.07) continue;
+              ctx.fillStyle = 'rgba(232,234,238,' + (0.12 + 0.88 * b).toFixed(2) + ')';
+              ctx.fillText(CH[Math.min(CH.length - 1, Math.floor((1 - b) * (CH.length - 1)))], (c + 0.5) * cell, (r + 0.5) * lineH);
+            }
+          }
+        }
+        function scrollTarget() {
+          var r = panel.getBoundingClientRect(), vh = window.innerHeight;
+          var p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+          return { x: 0.5 + 0.32 * Math.sin(p * Math.PI * 2), y: 0.1 + 0.8 * p };
+        }
+        function loop(now) {
+          if (!visible) return;
+          requestAnimationFrame(loop);
+          if (now - last < 33) return;             // 약 30fps
+          last = now;
+          if (now > touchUntil) target = scrollTarget();
+          light.x += (target.x - light.x) * 0.08;
+          light.y += (target.y - light.y) * 0.08;
+          draw(now / 1000);
+        }
+        function pointAt(x, y) {
+          var r = panel.getBoundingClientRect();
+          target = { x: (x - r.left) / r.width, y: (y - r.top) / r.height };
+          touchUntil = performance.now() + 1500;
+        }
+        panel.addEventListener('touchmove', function (e) { pointAt(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+        panel.addEventListener('touchstart', function (e) { pointAt(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+        panel.addEventListener('mousemove', function (e) { pointAt(e.clientX, e.clientY); });
+
+        resize();
+        if ('ResizeObserver' in window) new ResizeObserver(function () { resize(); if (still) draw(0); }).observe(panel);
+        panel.classList.add('fx-on', 'mosaic-on');
+        if (still) { light = scrollTarget(); draw(0); return; }
+        new IntersectionObserver(function (e) {
+          var was = visible; visible = e[0].isIntersecting;
+          if (visible && !was) requestAnimationFrame(loop);
+        }).observe(panel);
+        requestAnimationFrame(loop);
+      };
+    })();
+  </script>
+
+  <!-- 인터랙션 2: 히어로 패널의 빛을 숫자 모자이크로 렌더링, 마우스 주변의 숫자가 밝아짐 (shaders.com 무료 컴포넌트, PC)
        - 페이지가 다 뜬 뒤 여유 시간에만 불러옴 (첫 화면 속도에 영향 없음)
-       - 터치 기기(모바일), WebGPU 미지원, 데이터 절약, 느린 회선이면 불러오지 않고 CSS 숫자 패턴 유지
+       - 터치 기기(모바일), WebGPU 미지원, 데이터 절약, 느린 회선이면 셰이더 대신 2-B 가벼운 모자이크
        - 동작 줄이기면 움직임 없이 한 장면만 그림 -->
   <script>
     (function () {
       var fx = document.querySelector('.hero-panel .fx');
       var canvas = document.getElementById('fx-canvas');
       var conn = navigator.connection || {};
+      var fallback = function () { if (fx) fx.remove(); window.startMosaic && window.startMosaic(); };
       if (!fx || !navigator.gpu || conn.saveData || /2g/.test(conn.effectiveType || '') ||
-          matchMedia('(pointer: coarse)').matches) return;
+          matchMedia('(pointer: coarse)').matches) { fallback(); return; }
       var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // 레이어는 아래에서 위로: 위에서 내려오는 빛 → 마우스를 따라오는 부드러운 빛 → 숫자 모자이크(앞의 전부에 적용)
@@ -642,9 +793,9 @@
                 e[0].isIntersecting ? inst.resume() : inst.pause();
               }).observe(fx.parentNode);
             },
-            onError: function () { fx.parentNode.classList.remove('fx-on'); fx.remove(); }
+            onError: function () { fx.parentNode.classList.remove('fx-on'); fallback(); }
           }).then(function (i) { inst = i; });
-        }).catch(function () { fx.remove(); });
+        }).catch(fallback);
       }
       var idle = window.requestIdleCallback || function (f) { setTimeout(f, 200); };
       if (document.readyState === 'complete') idle(start);
