@@ -1,6 +1,8 @@
 # 랜딩페이지
 
 - AI로 제작 → Vercel 배포 (이 폴더를 Vercel 프로젝트 루트로 지정)
+- **자동 배포:** GitHub `main`에 푸시하면 Vercel(petitrich-landing)이 이 폴더를 자동으로 배포함. 다른 브랜치에 푸시하면 미리보기 주소가 따로 생김
+- **주의:** 사이트에 나가는 파일은 `index.html`. 디자인·구조는 `landing.template.html`을 고치고, `python3 tools/sync_landing.py --write`로 `index.html`을 다시 만든 뒤 둘 다 커밋 (Vercel은 빌드를 돌리지 않고 커밋된 `index.html`을 그대로 올림)
 - CTA → 선택한 라이브클래스 상품 상세페이지 연결
 - 배포 URL:
 - 최종 제출 시 URL + HTML 파일 모두 제출
