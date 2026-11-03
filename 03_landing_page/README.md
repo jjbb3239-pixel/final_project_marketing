@@ -4,3 +4,52 @@
 - CTA → 선택한 라이브클래스 상품 상세페이지 연결
 - 배포 URL:
 - 최종 제출 시 URL + HTML 파일 모두 제출
+
+## 구조 (와이어프레임 0~6)
+1 히어로 `#hero` · 2 조급함의 정체 `#cause` · 3 실수 `#mistakes` · 4 강의 철학 `#philosophy` · 5 강사 `#instructor` · 6 FAQ+신청 `#apply`
+- `class="ph"` = 소재 들어갈 자리(회색 점선). 실제 문구·이미지로 바꾸면 `ph` 제거
+- CTA는 `class="cta"` + `data-cta-location` 필수 (추적용). 위치값: hero / apply / sticky(모바일 하단, 히어로를 지나면 나타나고 신청 섹션에서 사라짐)
+
+## 로딩 속도 원칙 (광고 클릭 직후 이탈 방지)
+- 외부 폰트·CSS 프레임워크·JS 라이브러리 쓰지 않기 (CSS는 `<style>` 안에)
+- 이미지는 `assets/`에 WebP, 가로 1600px 이하, 장당 200KB 이하
+- 히어로 이미지만 `fetchpriority="high"`, 나머지는 `loading="lazy"`, 모든 `<img>`에 width/height
+- 영상은 직접 올리지 말고 썸네일 + 링크로
+
+## 소재 채울 때 쓰는 스킬 (`~/.claude/skills`)
+- `frontend-design` (anthropics/skills): 디자인 업데이트 시 색·서체·레이아웃 토큰을 먼저 정하고 템플릿 느낌 피하기
+- `copywriting` (coreyhaines31/marketingskills): 섹션별 문구 작성
+- `cro`: 광고 문구와 히어로 문구 일치(message match), 신뢰 요소는 CTA 근처, 버튼은 누르면 무슨 일이 생기는지 말하기
+- `conversion-tracking`, `analytics`: GTM 태그 설정·검증
+- `seo-page`, `seo-schema`, `seo-geo`, `seo-technical` (AgriciDaniel/claude-seo), `ai-seo`, `schema` (marketingskills): SEO·GEO·AEO 점검
+
+## 디자인 (레퍼런스: Quanta, land-book)
+- 무채색 다크, 좁은 자간 헤드라인(Pretendard), 흰 알약 CTA + 화살표, 왼쪽 라벨/오른쪽 내용 2단, 가는 구분선
+- 색·폭: `<style>` 맨 위 `:root` 토큰만 바꾸면 전체 반영. 섹션별 스타일은 번호 주석 아래
+- HTML 구조(섹션 id, `h1` 1개 + 섹션별 `h2`, `.cta` 버튼, `data-slot`)는 추적·SEO·드라이브 반영에 쓰이니 유지
+- 인터랙션
+  - 히어로 패널: 빛을 숫자 모자이크(shaders `Ascii`)로 렌더링, 마우스 주변 숫자가 밝아짐. 화면 밖이면 렌더링 멈춤
+  - 4번 제목: 스크롤하면 단어 단위로 밝아짐 (동작 줄이기면 처음부터 다 보임)
+  - 모바일 하단 CTA: 히어로 CTA를 지나면 나타나고 신청 섹션에서 사라짐
+- 터치 기기·WebGPU 미지원·데이터 절약이면 셰이더 대신 CSS 숫자 패턴
+- `qa-preview.html`: 샘플 문구로 채운 점검용 페이지 (추적·검색 노출 꺼 둠). 소재가 들어오면 삭제
+
+## SEO / GEO / AEO
+- `<head>`: title, description, canonical, OG, `Course` JSON-LD (가격·강의 수 바뀌면 같이 수정)
+- 문구는 HTML에 직접 씀 (AI 크롤러는 JS를 실행하지 않음)
+- FAQ 확정 후 `FAQPage` JSON-LD 추가, 공유 이미지 준비되면 `og:image` 주석 해제
+- `robots.txt`(AI 검색 크롤러 허용), `sitemap.xml`. 업데이트 시 footer와 sitemap 날짜 갱신
+
+## (이전) 빛 효과 시안 (`sian-light.html` → `/sian-light`) — 새 디자인으로 대체됨
+- 라이브러리: [shaders](https://shaders.com) 4.0.4 (WebGPU), 무료 컴포넌트만 사용 (프리셋은 Pro라 참고만)
+- 페이지 전체가 어두운 남색 톤이고, 빛은 화면에 고정된 배경 캔버스에 그림
+- 레이어: `StudioBackground`(조명 바탕) → `Godrays`(빛줄기) → `Blur`로 감싼 `Fog`(마우스가 휘젓는 옅은 안개, 참고: Smokescreen) → `FilmGrain`
+- 색은 `:root`의 `--fx-*`, 세기는 파일 하단 로더의 props에서 조절
+- 속도: 라이브러리(gzip 약 700KB)는 페이지가 다 뜬 뒤 여유 시간에만 로드. WebGPU 미지원·데이터 절약·느린 회선이면 CSS 그라디언트만 보임
+- 동작 줄이기 설정이면 움직임·마우스 반응 없이 멈춘 빛만 그림
+- 터치 기기(모바일)는 셰이더를 불러오지 않고 화면 고정 CSS 빛 배경(`.page-bg`)만 보여 줌 (데이터·배터리 절약, iOS 고정 배경 문제 회피)
+- 시안 페이지는 추적·검색 노출 꺼 둠. 채택하면 `landing.template.html`에 CSS·로더만 옮기기
+
+## shaders MCP
+- 레포 루트 `.mcp.json`에 등록됨 (`npx shaders@latest install-mcp`로 생성). 다음 Claude Code 세션에서 처음 연결할 때 shaders.com 무료 계정 로그인 필요
+- 프리셋 검색은 무료, 프리셋 설치는 Pro. 이 프로젝트는 무료 컴포넌트만 씀

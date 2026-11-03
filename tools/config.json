@@ -1,0 +1,22 @@
+{
+  "drive_root": "/mnt/g/.shortcut-targets-by-id/1vCwqQ27aZuQcDB0aEb60XoQsynxTIOb_/최종프로젝트_1조/그로스 퍼포먼스/랜딩소재",
+  "landing_dir": "03_landing_page",
+  "landing_url": "https://petitrich-landing.vercel.app/",
+  "cta_base": "https://fireclub.liveklass.com/classes/274558",
+
+  "utm": {
+    "campaign": "finalproject",
+    "channels": {
+      "meta":   { "utm_source": "meta",   "utm_medium": "cpc" },
+      "google": { "utm_source": "google", "utm_medium": "cpc" }
+    },
+    "cta_default": { "utm_source": "meta", "utm_medium": "cpc", "utm_content": "landing" },
+    "google_ads": []
+  },
+
+  "image_slots": {
+    "hero":       { "slot": "hero.image",       "width": 960,  "alt": "강사 사진", "priority": true },
+    "instructor": { "slot": "instructor.photo", "width": 960,  "alt": "강사 사진" },
+    "og":         { "og": true,                 "width": 1200 }
+  }
+}
