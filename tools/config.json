@@ -13,9 +13,7 @@
     "cta_default": { "utm_source": "meta", "utm_medium": "cpc", "utm_content": "landing" },
     "google_ads": [
       {"round": "1차", "content": "google_1차_입문", "term": "{keyword}"},
-      {"round": "1차", "content": "google_1차_강의", "term": "{keyword}"},
-      {"round": "2차", "content": "google_2차_입문", "term": "{keyword}"},
-      {"round": "2차", "content": "google_2차_강의", "term": "{keyword}"}
+      {"round": "2차", "content": "google_2차_입문", "term": "{keyword}"}
     ]
   },
 
