@@ -588,6 +588,18 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 </style><style id="course-photo">
 /* 강의 소개 소재: 16:9 원본 그대로 (잘림 없음) */
 .course-photo img { aspect-ratio:16/9; object-fit:contain; height:auto; }
+</style><style id="outcomes-dark">
+/* '수강 후, 이렇게 정리해 보세요' 블록: 화면 폭 전체 검은 배경(#121212), 굵은 글씨 주황(#FF6C28), 얇은 글씨 흰색 */
+#instructor .wire-outcomes {
+  --text:#fff; --muted:#fff; --line-strong:rgba(255,255,255,.18);
+  position:relative; background:#121212; color:#fff; border-top:0;
+  padding-bottom:88px; margin-bottom:-1px;
+  box-shadow:0 0 0 100vmax #121212; clip-path:inset(0 -100vmax);
+}
+#instructor .wire-outcomes h2, #instructor .wire-outcomes h3 { color:#FF6C28; }
+#instructor .wire-outcomes .side-label, #instructor .wire-outcomes .lead, #instructor .wire-outcomes article > span,
+#instructor .wire-outcomes article p, #instructor .wire-outcomes .wire-text-link { color:#fff; }
+#instructor .wire-outcomes + .wire-resources { border-top:0; }
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
