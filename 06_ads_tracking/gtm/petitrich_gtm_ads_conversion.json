@@ -1,0 +1,99 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-11-04 12:30:00",
+  "containerVersion": {
+    "accountId": "6402311479",
+    "containerId": "285099722",
+    "containerVersionId": "0",
+    "container": {
+      "accountId": "6402311479",
+      "containerId": "285099722",
+      "name": "petitrich-landing.vercel.app",
+      "publicId": "GTM-PLPB9NFW",
+      "usageContext": [
+        "WEB"
+      ]
+    },
+    "tag": [
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "tagId": "50",
+        "name": "Google Ads 전환 - CTA 클릭",
+        "type": "awct",
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "firingTriggerId": [
+          "9"
+        ],
+        "parameter": [
+          {
+            "type": "BOOLEAN",
+            "key": "enableNewCustomerReporting",
+            "value": "false"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "enableConversionLinker",
+            "value": "true"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "enableProductReporting",
+            "value": "false"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "enableEnhancedConversion",
+            "value": "false"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "conversionId",
+            "value": "18554881482"
+          },
+          {
+            "type": "TEMPLATE",
+            "key": "conversionLabel",
+            "value": "XIj3CO_42bEdEMqL1I9F"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "rdp",
+            "value": "false"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "enableShippingData",
+            "value": "false"
+          }
+        ]
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "triggerId": "9",
+        "name": "CE - cta_click",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "cta_click"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
