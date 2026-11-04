@@ -11,10 +11,11 @@ name: Vercel 배포 (팀원 커밋)
 on:
   push:
     branches: [main]
+  workflow_dispatch:   # Actions 탭에서 'Run workflow'로 수동 배포
 
 jobs:
   deploy:
-    if: github.event.head_commit.author.username != 'jjbb3239-pixel'
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.author.username != 'jjbb3239-pixel'
     runs-on: ubuntu-latest
     steps:
       - name: Vercel 배포 훅 호출
@@ -26,4 +27,4 @@ jobs:
             exit 1
           fi
           curl -fsS -X POST "$HOOK"
-          echo "배포 요청 완료: ${{ github.event.head_commit.author.username }} 의 커밋 ${{ github.sha }}"
+          echo "배포 요청 완료: ${{ github.actor }} / 커밋 ${{ github.sha }}"
