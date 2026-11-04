@@ -1,0 +1,20 @@
+[
+ {
+  "slot": "hero.image",
+  "path": "assets/qa-hero.webp",
+  "w": 800,
+  "h": 1000,
+  "alt": "강사 사진 (샘플)",
+  "priority": true,
+  "og": false
+ },
+ {
+  "slot": "instructor.photo",
+  "path": "assets/qa-instructor.webp",
+  "w": 800,
+  "h": 1000,
+  "alt": "강사 사진 (샘플)",
+  "priority": false,
+  "og": false
+ }
+]

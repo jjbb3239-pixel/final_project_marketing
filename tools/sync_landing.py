@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
-"""구글 드라이브 소재 → 랜딩페이지 반영 + 소재별 UTM 생성.
+"""랜딩페이지 소재 반영과 빌드. 두 단계로 나뉨 (여러 명이 동시에 작업해도 Git이 엉키지 않게).
 
-    python3 tools/sync_landing.py          # 바뀔 내용만 보여 줌 (파일 안 바꿈)
-    python3 tools/sync_landing.py --write  # 실제로 index.html, 이미지, UTM 파일 갱신
+    python3 tools/sync_landing.py pull           # 드라이브 → 저장소 (문구 스냅샷, 이미지, UTM). 드라이브 담당 1명만
+    python3 tools/sync_landing.py pull --dry     # pull 결과만 미리 보기
+    python3 tools/sync_landing.py build          # 저장소 → 사이트 파일 (03_landing_page/dist). Vercel도 배포 때 이걸 실행
+    python3 tools/sync_landing.py build --check  # 템플릿에 문제가 없는지만 확인
 
-입력 (드라이브, config.json 의 drive_root):
-    랜딩/copy.csv            slot,내용,설명
-    랜딩/images/<이름>.*     hero / instructor / og
-    광고소재/<N차>/<파일>    N팀_N차_소재유형_번호[_카드].ext
-출력:
-    03_landing_page/index.html        (landing.template.html 을 채운 결과)
-    03_landing_page/assets/*.webp
-    06_ads_tracking/utm.csv  +  드라이브 광고소재/utm_목록.csv
+Git에 올리는 것 (사람이 고치는 원본):
+    03_landing_page/landing.template.html      디자인·구조
+    03_landing_page/content/copy.csv           문구 (pull 이 드라이브에서 복사)
+    03_landing_page/content/images.json        이미지 목록 (pull 이 작성)
+    03_landing_page/content/qa-copy.csv        qa-preview 용 샘플 문구
+    03_landing_page/assets/*.webp              이미지 (pull 이 변환)
+Git에 올리지 않는 것 (build 결과물, .gitignore):
+    03_landing_page/dist/                      index.html, qa-preview.html, sitemap.xml + 정적 파일 복사본
 """
-import csv, datetime, html, json, os, re, sys
+import csv, datetime, html, json, os, re, shutil, sys
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -21,14 +23,14 @@ ROOT = Path(__file__).resolve().parent.parent
 CFG = json.loads((ROOT / "tools/config.json").read_text(encoding="utf-8"))
 DRIVE = Path(os.environ.get("SYNC_DRIVE_ROOT", CFG["drive_root"]))  # 테스트 시 다른 폴더 지정
 LANDING = ROOT / CFG["landing_dir"]
+CONTENT = LANDING / "content"
 IMG_EXT = {".jpg", ".jpeg", ".png", ".webp"}
 TODAY = datetime.date.today()
 
 
 # ---------- 문구 ----------
 
-def read_copy():
-    path = DRIVE / "랜딩/copy.csv"
+def read_copy(path):
     if not path.exists():
         return {}
     with open(path, encoding="utf-8-sig", newline="") as f:
@@ -189,34 +191,23 @@ def write_csv(path, rows):
         w.writerows(rows)
 
 
-# ---------- 실행 ----------
+# ---------- 페이지 조립 ----------
 
-def main():
-    write = "--write" in sys.argv
-    if not DRIVE.exists():
-        sys.exit(f"드라이브 폴더가 없습니다: {DRIVE}\nWSL에서 'mount -t drvfs G: /mnt/g' 후 다시 실행하세요.")
-
-    copy = read_copy()
+def build_page(template, copy, images):
+    """템플릿 + 문구 + 이미지 목록 → 완성 HTML."""
     values = {k: render(k, v) for k, v in copy.items() if not k.startswith("seo.")}
     for k in ("hero.cta", "apply.cta"):  # 버튼은 줄바꿈 없이
         if k in copy:
             values[k] = html.escape(" ".join(copy[k].split()))
-
-    template = (LANDING / "landing.template.html").read_text(encoding="utf-8")
-    page = template
     og_image = None
-    for name, src in find_images().items():
-        spec = CFG["image_slots"][name]
-        path, w, h = convert_image(src, name, spec["width"], write)
-        if spec.get("og"):
-            og_image = (path, w, h)
+    for im in images:
+        if im.get("og"):
+            og_image = im
             continue
-        load = 'fetchpriority="high"' if spec.get("priority") else 'loading="lazy"'
-        values[spec["slot"]] = f'<img class="slot-img" src="{path}" width="{w}" height="{h}" alt="{html.escape(spec["alt"])}" {load} decoding="async">'
+        load = 'fetchpriority="high"' if im.get("priority") else 'loading="lazy"'
+        values[im["slot"]] = f'<img class="slot-img" src="{im["path"]}" width="{im["w"]}" height="{im["h"]}" alt="{html.escape(im["alt"])}" {load} decoding="async">'
 
-    page, changed = fill(page, values)
-
-    # SEO 문구, 공유 이미지, CTA 기본 UTM, 업데이트 날짜
+    page, changed = fill(template, values)
     if "seo.title" in copy:
         t = html.escape(copy["seo.title"])
         page = re.sub(r"<title>.*?</title>", f"<title>{t}</title>", page, count=1)
@@ -228,47 +219,104 @@ def main():
         page = re.sub(r'(<meta property="og:description" content=")[^"]*', rf"\g<1>{d}", page, count=1)
         changed.append("seo.description")
     if og_image:
-        path, w, h = og_image
-        page = re.sub(r"<!-- 공유 이미지 준비되면 주석 해제[^\n]*\n(.*?)\n\s*-->",
-                      lambda m: m.group(1), page, count=1, flags=re.S)
-        page = page.replace(CFG["landing_url"] + "assets/og.jpg", CFG["landing_url"] + path)
-        page = page.replace('og:image:width" content="1200"', f'og:image:width" content="{w}"')
-        page = page.replace('og:image:height" content="630"', f'og:image:height" content="{h}"')
+        page = re.sub(r"<!-- 공유 이미지 준비되면 주석 해제[^\n]*\n(.*?)\n\s*-->", lambda m: m.group(1), page, count=1, flags=re.S)
+        page = page.replace(CFG["landing_url"] + "assets/og.jpg", CFG["landing_url"] + og_image["path"])
+        page = page.replace('og:image:width" content="1200"', f'og:image:width" content="{og_image["w"]}"')
+        page = page.replace('og:image:height" content="630"', f'og:image:height" content="{og_image["h"]}"')
         changed.append("og.image")
 
-    u = CFG["utm"]
-    d = u["cta_default"]
+    u = CFG["utm"]; d = u["cta_default"]
     cta_url = utm_url(CFG["cta_base"], {"utm_source": d["utm_source"], "utm_medium": d["utm_medium"], "utm_campaign": u["campaign"], "utm_content": d["utm_content"]})
     page = page.replace(f'href="{CFG["cta_base"]}"', f'href="{html.escape(cta_url)}"')
+    page = re.sub(r'<time data-build="updated" datetime="[^"]*">[^<]*</time>',
+                  f'<time data-build="updated" datetime="{TODAY}">{TODAY.year}년 {TODAY.month}월 {TODAY.day}일</time>', page)
+    empty = sorted({s for s, *_ in SlotFinder(template).slots if s not in values})
+    return page, changed, empty, cta_url
 
-    old = (LANDING / "index.html").read_text(encoding="utf-8")
-    stamp = re.compile(r'<time data-build="updated" datetime="[^"]*">[^<]*</time>')
-    if stamp.sub("", page) == stamp.sub("", old):  # 내용이 같으면 날짜도 그대로
-        page = old
-    else:
-        page = stamp.sub(f'<time data-build="updated" datetime="{TODAY}">{TODAY.year}년 {TODAY.month}월 {TODAY.day}일</time>', page)
 
+def qa_version(page):
+    """점검용: 추적(GTM·Clarity) 끄고 검색 노출 막기."""
+    page = re.sub(r"(GTM_ID:\s*')[^']*'", r"\g<1>XXXXXXX'", page)
+    page = re.sub(r"(CLARITY_ID:\s*')[^']*'", r"\g<1>XXXXXXXXXX'", page)
+    return page.replace('<meta name="robots" content="index, follow, max-image-preview:large">', '<meta name="robots" content="noindex, nofollow">')
+
+
+def read_images(path):
+    return json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+
+
+# ---------- 실행 ----------
+
+SOURCE_ONLY = {"landing.template.html", "content", "dist", "README.md", "vercel.json", ".vercelignore"}
+
+
+def cmd_build(argv):
+    """저장소의 원본으로 사이트 파일을 만듦. 드라이브·Pillow 필요 없음 (Vercel 빌드에서도 실행)."""
+    out = LANDING / "dist"
+    template = (LANDING / "landing.template.html").read_text(encoding="utf-8")
+    copy, images = read_copy(CONTENT / "copy.csv"), read_images(CONTENT / "images.json")
+    page, changed, empty, cta_url = build_page(template, copy, images)
+    qa_page, *_ = build_page(template, read_copy(CONTENT / "qa-copy.csv"), read_images(CONTENT / "qa-images.json"))
+    print(f"[빌드] 채워진 칸 {len(changed)}개, 비어 있는 칸 {len(empty)}개: {', '.join(empty) or '없음'}")
+    print(f"[빌드] CTA 기본 링크: {cta_url}")
+    if "--check" in argv:
+        print("(확인만 했습니다)")
+        return
+    if out.exists():
+        shutil.rmtree(out)
+    out.mkdir()
+    for item in LANDING.iterdir():  # 정적 파일 복사 (assets, robots.txt, wireframe 등)
+        if item.name in SOURCE_ONLY or item.name.startswith("."):
+            continue
+        (shutil.copytree if item.is_dir() else shutil.copy2)(item, out / item.name)
+    (out / "index.html").write_text(page, encoding="utf-8")
+    (out / "qa-preview.html").write_text(qa_version(qa_page), encoding="utf-8")
+    (out / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f'  <url><loc>{CFG["landing_url"]}</loc><lastmod>{TODAY}</lastmod></url>\n</urlset>\n', encoding="utf-8")
+    print(f"[빌드] 완료: {out.relative_to(ROOT)}/ (index.html, qa-preview.html, sitemap.xml + 정적 파일)")
+
+
+def cmd_pull(argv):
+    """드라이브의 문구·이미지를 저장소로 가져오고 소재별 UTM을 만듦. 드라이브 담당 1명만 실행."""
+    write = "--dry" not in argv
+    if not DRIVE.exists():
+        sys.exit(f"드라이브 폴더가 없습니다: {DRIVE}\nWSL에서 'mount -t drvfs G: /mnt/g' 후 다시 실행하세요.")
+    src = DRIVE / "랜딩/copy.csv"
+    images = []
+    for name, p in find_images().items():
+        spec = CFG["image_slots"][name]
+        path, w, h = convert_image(p, name, spec["width"], write)
+        images.append({"slot": spec.get("slot"), "path": path, "w": w, "h": h, "alt": spec.get("alt", ""),
+                       "priority": bool(spec.get("priority")), "og": bool(spec.get("og"))})
     rows, skipped = build_utm_rows()
-
-    # ---- 결과 보고 ----
-    empty = [s for s, *_ in SlotFinder(template).slots if s not in values]
-    print(f"[랜딩] 채워진 칸 {len(changed)}개: {', '.join(changed) or '없음'}")
-    print(f"[랜딩] 비어 있는 칸 {len(set(empty))}개: {', '.join(sorted(set(empty)))}")
-    print(f"[랜딩] index.html {'변경 있음' if page != old else '변경 없음'}")
+    copy = read_copy(src)
+    print(f"[pull] 문구 {len(copy)}칸, 이미지 {len(images)}개: {', '.join(i['path'] for i in images) or '없음'}")
     print(f"[UTM] 소재 {len(rows)}개" + (f", 파일명 규칙 안 맞아 건너뜀: {', '.join(skipped)}" if skipped else ""))
     for r in rows:
         print(f"  {r['차수']} {r['채널']} {r['소재']}\n    광고 URL : {r['광고 URL']}")
-    print(f"[CTA] 기본 링크: {cta_url}")
-
     if not write:
-        print("\n(미리보기만 했습니다. 반영하려면 --write)")
+        print("\n(미리보기만 했습니다. 반영하려면 --dry 없이 실행)")
         return
-    (LANDING / "index.html").write_text(page, encoding="utf-8")
-    sm = LANDING / "sitemap.xml"
-    sm.write_text(re.sub(r"<lastmod>[^<]*</lastmod>", f"<lastmod>{TODAY}</lastmod>", sm.read_text(encoding="utf-8")), encoding="utf-8")
+    CONTENT.mkdir(exist_ok=True)
+    if src.exists():
+        shutil.copyfile(src, CONTENT / "copy.csv")
+    (CONTENT / "images.json").write_text(json.dumps(images, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     write_csv(ROOT / "06_ads_tracking/utm.csv", rows)
     write_csv(DRIVE / "광고소재/utm_목록.csv", rows)
-    print("\n반영 완료: index.html, sitemap.xml, 06_ads_tracking/utm.csv, 드라이브 광고소재/utm_목록.csv")
+    print("\n반영 완료: content/copy.csv, content/images.json, assets/*.webp, 06_ads_tracking/utm.csv, 드라이브 utm_목록.csv")
+    print("다음: python3 tools/sync_landing.py build 로 확인 → git add 03_landing_page/content 03_landing_page/assets 06_ads_tracking/utm.csv → 커밋·푸시")
+
+
+def main():
+    argv = sys.argv[1:]
+    cmd = argv[0] if argv and not argv[0].startswith("-") else ""
+    if cmd == "build":
+        cmd_build(argv)
+    elif cmd == "pull":
+        cmd_pull(argv)
+    else:
+        sys.exit(__doc__)
 
 
 if __name__ == "__main__":
