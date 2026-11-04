@@ -9,7 +9,7 @@ ID는 `03_landing_page/index.html` 상단 `window.TRACKING` 두 값만 바꾸면
 - [x] 메타 픽셀 ID 입력 (`META_PIXEL_ID` = 1664723555062468, "Final-project 픽셀") — 페이지에 직접 설치됨, PageView 자동
 - [ ] ⚠️ GTM 안에 메타 픽셀 태그를 또 만들지 않기 (중복 집계)
 - [ ] GA4 구성 태그 (GTM)
-- [ ] GTM 맞춤 이벤트 트리거 `cta_click` → GA4 이벤트 `cta_click` (매개변수 `cta_location`: header(PC 상단) / hero / floating(PC 좌측 하단) / apply / sticky(모바일 하단))
+- [ ] GTM 맞춤 이벤트 트리거 `cta_click` → GA4 이벤트 `cta_click` (매개변수 `cta_location`: header(PC 상단) / hero / apply / sticky(모바일 하단))
 - [ ] GTM 맞춤 이벤트 트리거 `section_view` → GA4 이벤트 `section_view` (매개변수 `section_name`) — 이탈 구간 분석용
 - [ ] GA4에서 `cta_click` 을 주요 이벤트(전환)로 표시
 - [ ] Microsoft Clarity(무료 히트맵·세션 녹화) 프로젝트 생성 → ID를 `index.html` 상단 `CLARITY_ID`에 입력. 소재별(`utm_content`)로 나눠 볼 수 있게 태그가 자동으로 붙음
