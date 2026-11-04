@@ -598,6 +598,11 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 </style><style id="course-photo">
 /* 강의 소개 소재: 16:9 원본 그대로 (잘림 없음) */
 .course-photo img { aspect-ratio:16/9; object-fit:contain; height:auto; }
+/* 강의 소개: 사진을 키우고 강의 목록의 세로 가운데에 */
+#curriculum .wire-course-layout { grid-template-columns:1.15fr .85fr; align-items:center; gap:44px; max-width:1180px; }
+#curriculum .course-photo { padding:10px; }
+#curriculum .course-photo img { border-radius:10px; }
+@media(max-width:860px) { #curriculum .wire-course-layout { grid-template-columns:1fr; } }
 </style><style id="outcomes-dark">
 /* '수강 후, 이렇게 정리해 보세요' 블록: 화면 폭 전체 검은 배경(#121212), 굵은 글씨 주황(#FF6C28), 얇은 글씨 흰색 */
 #instructor .wire-outcomes {
