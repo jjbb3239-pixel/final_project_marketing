@@ -1,7 +1,7 @@
 # 랜딩페이지
 
 - **배포:** GitHub `main`에 푸시하면 Vercel(petitrich-landing)이 `python3 ../tools/sync_landing.py build`로 사이트를 만들어 자동 배포. 빌드가 실패하면 직전 사이트가 그대로 유지됨
-- **팀원 커밋 배포:** Vercel 무료 플랜은 소유자(jjbb3239-pixel)가 아닌 사람의 커밋을 자동 배포에서 막음. 그래서 팀원이 `main`에 Merge하면 GitHub Actions(`.github/workflows/vercel-deploy-hook.yml`)가 Vercel 배포 훅을 호출해 대신 배포함 (저장소 Actions 탭에서 성공 여부 확인). GitHub 커밋 옆 Vercel 빨간 X(Deployment was blocked)는 이 때문이고, Actions가 초록이면 정상 배포된 것
+- **팀원 커밋 배포:** 저장소가 공개(public)라서 팀원 Merge도 Vercel이 바로 배포함 (Vercel은 공개 저장소의 공동 작업을 무료 플랜에서도 허용. 비공개였을 때는 소유자 외 커밋이 "Deployment was blocked"로 막혔음). 예비 장치로 GitHub Actions(`.github/workflows/vercel-deploy-hook.yml`)가 팀원 커밋 때 배포 훅을 한 번 더 호출함 → 같은 커밋이 두 번 배포될 수 있으나 문제 없음. 반영이 안 보이면 Actions 탭 → "Vercel 배포 (팀원 커밋)" → **Run workflow** (쓰기 권한 있는 협업자 누구나 가능, 그 시점의 최신 main을 배포)
 - **사이트 파일(`index.html`, `qa-preview.html`, `sitemap.xml`)은 Git에 올리지 않음.** 배포 때마다 `landing.template.html` + `content/`로 새로 만들어짐 (`dist/`, .gitignore)
 
 ## 여러 명이 동시에 작업할 때 (엉키지 않게)
