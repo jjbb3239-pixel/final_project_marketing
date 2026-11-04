@@ -501,6 +501,18 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 .site-head .brand { gap:16px; align-items:center; }
 .footer-partners { margin:0 0 24px; align-items:center; }
 @media(max-width:600px) { .partner-logos { padding:0; gap:12px; } .site-head .brand { gap:12px; } }
+</style><style id="cream-header-footer">
+/* 헤더·푸터 크림색: 이 영역 안에서만 색 토큰을 밝은 테마로 바꿈 */
+.notice, .site-head, footer {
+  --cream:#f5efe3; --text:#1f1b16; --muted:#6b6358; --faint:#9a9083;
+  --line:rgba(31,27,22,.12); --line-strong:rgba(31,27,22,.22);
+  --pill-bg:#1f1b16; --pill-text:#f5efe3;
+  background:var(--cream); color:var(--text);
+}
+.site-head { background:var(--cream); }
+.site-head .wire-nav a:hover { border-color:#1f1b16; }
+.site-head .logo-divider, footer .logo-divider { background:rgba(31,27,22,.25); }
+footer { border-top:1px solid var(--line); }
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <a class="skip" href="#hero">본문으로 건너뛰기</a>
