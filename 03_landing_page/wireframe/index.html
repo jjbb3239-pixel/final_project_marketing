@@ -605,6 +605,23 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 .resource-photo img { aspect-ratio:1081/604; height:auto; object-fit:contain; background:#fff; }
 /* 공감과 수강 후기 제목: 주황, 기존보다 5px 크게 */
 #cause-title { color:#FF6C28; font-size:clamp(33px, calc(4.2vw + 5px), 51px); }
+</style><style id="review-marquee">
+/* 수강 후기: 왼쪽으로 계속 흘러가는 루프 (같은 묶음 4개, 절반 이동 후 처음으로) */
+.review-marquee { position:relative; margin:36px calc(50% - 50vw) 0; overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent); }
+.review-track { display:flex; width:max-content; animation:review-flow 48s linear infinite; padding:8px 0 22px; }
+.review-marquee:hover .review-track, .review-marquee:focus-within .review-track { animation-play-state:paused; }
+.review-track .review-cards { display:flex; gap:24px; margin:0; padding-right:24px; grid-template-columns:none; }
+.review-track .review-card { flex:none; width:clamp(300px,30vw,460px); padding:32px 32px 34px; }
+.review-track .review-card h4 { font-size:20px; }
+.review-track .review-stars { font-size:26px; }
+.review-track .review-card p:last-child { font-size:17px; }
+@keyframes review-flow { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+@media(prefers-reduced-motion:reduce) {
+  .review-marquee { overflow-x:auto; -webkit-mask-image:none; mask-image:none; }
+  .review-track { animation:none; }
+  .review-track .review-cards[aria-hidden="true"] { display:none; }
+}
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -693,10 +710,29 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
         </div>
         <div class="wire-inline-cta"><a class="pill cta" data-cta-location="empathy" href="https://fireclub.liveklass.com/classes/274558/classroom/1191830/?preview=true" target="_blank" rel="noopener">1강 무료 미리보기<span class="pill-arrow" aria-hidden="true">↗</span></a></div>
         <div class="wire-review-title"><h3>평균 평점 5.0.<br>먼저 배운 수강생의 이야기.</h3><p>공식 강의 페이지의 실제 후기 중 학습 경험을 발췌했습니다.</p></div>
-        <div class="review-cards">
-          <article class="review-card"><h4>50대 할**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>나이 60이 가까워진 나이에 겨우 시작해서<br>겁이 많이 나더라구요. 이렇게 강의까지 듣고 보니<br>안개속에서 제 길을 찾은 느낌입니다.<br>저와 아이들을 위해 열심히 살려고 합니다.</p></article>
-          <article class="review-card"><h4>50대 파**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>몇년 전부터 해외 etf로 시작했는데 개별 종목으로<br>바꿔 보려니 지식이 아주 딸리네요~ 쁘띠리치님<br>강의와 까페 드나들면서 열심히 해볼게요^^</p></article>
-          <article class="review-card"><h4>50대 옥**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>여러가지로 배울 점들이 너무 많네요.<br>국내주식만 하던 나에게 새로운 투자 마인드를<br>심어주는 것 같아요.</p></article>
+        <div class="review-marquee" aria-label="수강생 후기">
+          <div class="review-track">
+          <div class="review-cards">
+          <article class="review-card"><h4>50대 할**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>나이 60이 가까워진 나이에 겨우 시작해서 겁이 많이 나더라구요. 이렇게 강의까지 듣고 보니 안개속에서 제 길을 찾은 느낌입니다. 저와 아이들을 위해 열심히 살려고 합니다.</p></article>
+          <article class="review-card"><h4>50대 파**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>몇년 전부터 해외 etf로 시작했는데 개별 종목으로 바꿔 보려니 지식이 아주 딸리네요~ 쁘띠리치님 강의와 까페 드나들면서 열심히 해볼게요^^</p></article>
+          <article class="review-card"><h4>50대 옥**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>여러가지로 배울 점들이 너무 많네요. 국내주식만 하던 나에게 새로운 투자 마인드를 심어주는 것 같아요.</p></article>
+        </div>
+          <div class="review-cards" aria-hidden="true">
+          <article class="review-card" inert><h4>50대 할**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>나이 60이 가까워진 나이에 겨우 시작해서 겁이 많이 나더라구요. 이렇게 강의까지 듣고 보니 안개속에서 제 길을 찾은 느낌입니다. 저와 아이들을 위해 열심히 살려고 합니다.</p></article>
+          <article class="review-card" inert><h4>50대 파**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>몇년 전부터 해외 etf로 시작했는데 개별 종목으로 바꿔 보려니 지식이 아주 딸리네요~ 쁘띠리치님 강의와 까페 드나들면서 열심히 해볼게요^^</p></article>
+          <article class="review-card" inert><h4>50대 옥**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>여러가지로 배울 점들이 너무 많네요. 국내주식만 하던 나에게 새로운 투자 마인드를 심어주는 것 같아요.</p></article>
+        </div>
+          <div class="review-cards" aria-hidden="true">
+          <article class="review-card" inert><h4>50대 할**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>나이 60이 가까워진 나이에 겨우 시작해서 겁이 많이 나더라구요. 이렇게 강의까지 듣고 보니 안개속에서 제 길을 찾은 느낌입니다. 저와 아이들을 위해 열심히 살려고 합니다.</p></article>
+          <article class="review-card" inert><h4>50대 파**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>몇년 전부터 해외 etf로 시작했는데 개별 종목으로 바꿔 보려니 지식이 아주 딸리네요~ 쁘띠리치님 강의와 까페 드나들면서 열심히 해볼게요^^</p></article>
+          <article class="review-card" inert><h4>50대 옥**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>여러가지로 배울 점들이 너무 많네요. 국내주식만 하던 나에게 새로운 투자 마인드를 심어주는 것 같아요.</p></article>
+        </div>
+          <div class="review-cards" aria-hidden="true">
+          <article class="review-card" inert><h4>50대 할**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>나이 60이 가까워진 나이에 겨우 시작해서 겁이 많이 나더라구요. 이렇게 강의까지 듣고 보니 안개속에서 제 길을 찾은 느낌입니다. 저와 아이들을 위해 열심히 살려고 합니다.</p></article>
+          <article class="review-card" inert><h4>50대 파**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>몇년 전부터 해외 etf로 시작했는데 개별 종목으로 바꿔 보려니 지식이 아주 딸리네요~ 쁘띠리치님 강의와 까페 드나들면서 열심히 해볼게요^^</p></article>
+          <article class="review-card" inert><h4>50대 옥**</h4><p class="review-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</p><p>여러가지로 배울 점들이 너무 많네요. 국내주식만 하던 나에게 새로운 투자 마인드를 심어주는 것 같아요.</p></article>
+        </div>
+          </div>
         </div>
         <p class="wire-note">평점·후기 수 확인일: 2026.11.03.</p>
         <a class="wire-text-link" href="#curriculum">나에게 맞는 강의인지, 전체 강의 목차 보기 ↑</a>
