@@ -3,3 +3,13 @@
 @media(max-width:950px){.head-row{padding-top:14px;padding-bottom:10px;gap:12px}.wire-nav{order:3;width:100%;overflow:auto;gap:25px}.head-cta{margin-left:auto}.post-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.article-layout{grid-template-columns:minmax(0,760px);justify-content:center}.toc{position:static;display:flex;flex-wrap:wrap;gap:10px 18px}.toc strong{width:100%}.toc a{margin:0}.brand small{font-size:12px}.article-head{padding-top:45px}html{scroll-padding-top:150px}}
 @media(max-width:600px){body{font-size:18px}.wrap{padding:0 20px}.brand{font-size:17px}.brand small{display:none}.head-cta{font-size:13px;padding:8px 13px}.wire-nav{font-size:14px;gap:24px;padding:2px 0}.blog-hero{padding:50px 0 35px}.blog-hero h1{font-size:36px}.lead{font-size:18px}.tools{gap:18px}.search{max-width:none;min-width:0;width:100%;flex-basis:100%}.post-grid{grid-template-columns:1fr;gap:38px;padding-bottom:45px}.post-card h2{font-size:24px}.post-card .excerpt{font-size:18px}.article-head,.article-cover,.article-layout{padding-left:20px;padding-right:20px}.article-head h1{font-size:34px}.article-head .lead{font-size:18px}.article-cover{margin-bottom:28px}.article-layout{gap:30px}.toc{font-size:13px;line-height:1.7}.prose .intro{font-size:20px}.prose h2{font-size:26px;margin-top:45px}.takeaway,.checklist{padding:23px}.formula{font-size:19px;padding:20px}.article-cta{padding:25px}.article-cta h2{font-size:25px}.cta-row{flex-direction:column}.cta-row .pill{width:100%;min-height:52px}.blog-bottom-cta{padding:25px}.blog-bottom-cta h2{font-size:25px}.disclosure{font-size:13px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+
+
+@font-face{font-family:'Project Pretendard';src:url('../../assets/fonts/PretendardVariable.ttf') format('truetype');font-weight:100 900;font-display:swap}
+body,button,input,textarea,select{font-family:'Project Pretendard',sans-serif!important}
+.blog-hero,.article-head,.blog-bottom-cta,.article-cta{text-align:center}
+.blog-hero h1,.blog-hero .lead,.disclosure,.article-head h1,.article-head .lead{margin-left:auto;margin-right:auto}
+.article-meta,.cta-row,.tools{justify-content:center}
+.article-layout{grid-template-columns:minmax(0,760px);justify-content:center;max-width:870px}
+.toc{position:static;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;text-align:center}
+.toc strong{width:100%}.toc a{margin:0}
