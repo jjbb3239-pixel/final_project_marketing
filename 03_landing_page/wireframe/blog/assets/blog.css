@@ -13,3 +13,7 @@ body,button,input,textarea,select{font-family:'Project Pretendard',sans-serif!im
 .article-layout{grid-template-columns:minmax(0,760px);justify-content:center;max-width:870px}
 .toc{position:static;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 20px;text-align:center}
 .toc strong{width:100%}.toc a{margin:0}
+
+/* 모바일: 로고 줄에 '1강 무료 미리보기' 버튼까지 한 줄로 (로고 옆 문구 삭제 후) */
+@media(max-width:600px){.site-head .brand{flex-wrap:nowrap;min-width:0}.site-head .partner-logos{gap:10px!important}.head-cta{padding:8px 11px;white-space:nowrap}}
+@media(max-width:370px){.site-head .partner-logos{zoom:.85}.head-row{gap:8px}.head-cta{font-size:12px;padding:7px 10px}}
