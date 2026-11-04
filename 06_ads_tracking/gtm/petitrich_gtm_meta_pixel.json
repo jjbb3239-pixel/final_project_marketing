@@ -1,0 +1,98 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-11-04 13:00:00",
+  "containerVersion": {
+    "accountId": "6402311479",
+    "containerId": "285099722",
+    "containerVersionId": "0",
+    "container": {
+      "accountId": "6402311479",
+      "containerId": "285099722",
+      "name": "petitrich-landing.vercel.app",
+      "publicId": "GTM-PLPB9NFW",
+      "usageContext": [
+        "WEB"
+      ]
+    },
+    "tag": [
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "tagId": "60",
+        "name": "Meta 픽셀 - 기본 코드(PageView)",
+        "type": "html",
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "firingTriggerId": [
+          "2147479553"
+        ],
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\n!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?\nn.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;\nn.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;\nt.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,\ndocument,'script','https://connect.facebook.net/en_US/fbevents.js');\nfbq('init', '1664723555062468');\nfbq('track', 'PageView');\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ]
+      },
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "tagId": "61",
+        "name": "Meta 픽셀 - Lead (CTA 클릭)",
+        "type": "html",
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "firingTriggerId": [
+          "9"
+        ],
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nif (window.fbq) fbq('track', 'Lead', { content_name: 'cta_' + {{DLV - cta_location}} });\n</script>"
+          },
+          {
+            "type": "BOOLEAN",
+            "key": "supportDocumentWrite",
+            "value": "false"
+          }
+        ],
+        "setupTag": [
+          {
+            "tagName": "Meta 픽셀 - 기본 코드(PageView)",
+            "stopOnSetupFailure": true
+          }
+        ]
+      }
+    ],
+    "trigger": [
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "triggerId": "9",
+        "name": "CE - cta_click",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              {
+                "type": "TEMPLATE",
+                "key": "arg0",
+                "value": "{{_event}}"
+              },
+              {
+                "type": "TEMPLATE",
+                "key": "arg1",
+                "value": "cta_click"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

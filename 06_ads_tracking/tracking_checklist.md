@@ -7,14 +7,14 @@
 GTM 설정은 `gtm/petitrich_gtm_import.json`으로 가져오기(병합) 가능.
 ID는 `03_landing_page/index.html` 상단 `window.TRACKING` 두 값만 바꾸면 됩니다. `XXX`가 남아 있으면 해당 태그는 로드되지 않습니다.
 - [x] GTM 컨테이너 ID 입력 (`GTM_ID` = GTM-PLPB9NFW, 계정 "쁘띠리치")
-- [x] 메타 픽셀 ID 입력 (`META_PIXEL_ID` = 1664723555062468, "Final-project 픽셀") — 페이지에 직접 설치됨, PageView 자동
-- [ ] ⚠️ GTM 안에 메타 픽셀 태그를 또 만들지 않기 (중복 집계)
+- [x] 메타 픽셀 (ID 1664723555062468, "Final-project 픽셀") — **11/4부터 GTM에서 로드** (`Meta 픽셀 - 기본 코드(PageView)` 모든 페이지, `Meta 픽셀 - Lead (CTA 클릭)` cta_click 트리거, content_name=cta_{위치}). 랜딩 코드에서는 제거함 (`gtm/petitrich_gtm_meta_pixel.json`)
+- [ ] ⚠️ 랜딩 코드에 메타 픽셀을 다시 넣지 않기 (GTM과 중복 집계)
 - [x] GA4 구성 태그 (GTM) — `GA4 - Google 태그`, G-VJPV0LRV8K (스트림 PetitRich Landing Web). GTM 버전 2 게시 (11/4)
 - [x] GTM 맞춤 이벤트 트리거 `cta_click` → GA4 이벤트 `cta_click` (매개변수 `cta_location`: header(PC 상단) / hero / apply / sticky(모바일 하단))
 - [x] GTM 맞춤 이벤트 트리거 `section_view` → GA4 이벤트 `section_view` (매개변수 `section_name`) — 이탈 구간 분석용
 - [ ] GA4에서 `cta_click` 을 주요 이벤트(전환)로 표시
 - [ ] Microsoft Clarity(무료 히트맵·세션 녹화) 프로젝트 생성 → ID를 `index.html` 상단 `CLARITY_ID`에 입력. 소재별(`utm_content`)로 나눠 볼 수 있게 태그가 자동으로 붙음
-- 픽셀 CTA 클릭 이벤트: 표준 이벤트 `Lead` (페이지 코드에서 자동 전송) → Meta 광고 전환 최적화 이벤트로 선택
+- 픽셀 CTA 클릭 이벤트: 표준 이벤트 `Lead` (GTM에서 전송, 이전과 같은 이름·값) → Meta 광고 전환 최적화 이벤트로 선택
 
 ## 구글 애즈 전환 (계정 537-797-0294)
 - [ ] GA4 속성 ↔ 구글 애즈 연결 (GA4 관리 > 제품 링크 > Google Ads 링크, 팀 GA4 편집자 권한 필요)
