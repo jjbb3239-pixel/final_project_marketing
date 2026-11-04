@@ -511,7 +511,6 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 }
 .site-head { background:var(--cream); }
 .site-head .wire-nav a:hover { border-color:#1f1b16; }
-.skip:not(:focus) { top:-100px; } /* 건너뛰기 링크가 화면 맨 위에 살짝 보이던 것 숨김 (키보드 포커스 시에는 그대로 나타남) */
 .site-head .logo-divider, footer .logo-divider { background:rgba(31,27,22,.25); }
 footer { border-top:1px solid var(--line); }
 </style></head>
@@ -519,6 +518,8 @@ footer { border-top:1px solid var(--line); }
   <a class="skip" href="#hero">본문으로 건너뛰기</a>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
+  <!-- 광고 목적과 운영 주체(교육 프로젝트 팀/팀명)를 명시할 것 -->
+  <div class="notice"><div class="wrap">운영: <span data-slot="operator">교육 프로젝트 팀</span><span class="n-full">. 본 페이지는 교육 프로젝트의 일환으로 제작되었습니다.</span><span class="n-short"> / 교육 프로젝트 페이지</span></div></div>
 
   <header class="site-head">
     <div class="wrap head-row">
