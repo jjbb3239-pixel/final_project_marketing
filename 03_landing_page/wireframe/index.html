@@ -544,6 +544,29 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
   .hv-l2, .hv-l3 { font-size:8.4vw; }
   #hero .hero-cta { font-size:clamp(17px,4.6vw,22px); padding:20px 16px; }
 }
+</style><style id="hero-extras">
+/* 1. '미국 성장주' 은은한 빛 */
+.hv-l1 { filter:drop-shadow(0 0 14px rgba(255,196,110,.28)); animation:hv-glow 4.5s ease-in-out infinite; }
+@keyframes hv-glow { 0%,100% { filter:drop-shadow(0 0 10px rgba(255,196,110,.2)); } 50% { filter:drop-shadow(0 0 26px rgba(255,200,120,.45)); } }
+@media(prefers-reduced-motion:reduce) { .hv-l1 { animation:none; } }
+
+/* 2. 히어로 하단 핵심 정보 */
+.hero-facts-band { background:#141414; padding:clamp(32px,4vw,48px) 0; }
+.hero-facts { list-style:none; margin:0; padding:clamp(28px,3.4vw,52px) clamp(24px,3.4vw,60px); display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; background:#0c0c0c; }
+.hero-facts small { display:block; font-size:15px; color:#9b9ba3; line-height:1.5; }
+.hero-facts strong { display:block; margin-top:10px; font-size:clamp(20px,1.9vw,26px); font-weight:700; color:#fff; letter-spacing:-0.01em; line-height:1.3; }
+@media(max-width:760px) { .hero-facts { grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px 20px; } .hero-facts small { font-size:13px; } }
+
+/* 3. 섹션 바로가기 탭: 히어로 다음에 나타나고, 내리면 헤더 아래에 고정 */
+.section-tabs { position:sticky; top:var(--head-h,65px); z-index:25; display:grid; grid-template-columns:repeat(3,1fr); background:#111; border-bottom:1px solid rgba(255,255,255,.06); }
+.section-tabs a { position:relative; display:flex; align-items:center; justify-content:center; min-height:72px; padding:0 8px; text-align:center; text-decoration:none; font-size:clamp(14px,1.5vw,20px); font-weight:700; color:#a3a3a8; transition:color .2s; }
+.section-tabs a::after { content:""; position:absolute; left:0; right:0; bottom:0; height:4px; background:#ff6b2b; transform:scaleX(0); transition:transform .25s ease; }
+.section-tabs a:hover, .section-tabs a.on { color:#fff; }
+.section-tabs a:hover::after, .section-tabs a.on::after { transform:scaleX(1); }
+.section-tabs:hover a.on:not(:hover) { color:#a3a3a8; }
+.section-tabs:hover a.on:not(:hover)::after { transform:scaleX(0); }
+@media(max-width:600px) { .section-tabs a { min-height:52px; font-size:14px; } }
+#cause, #instructor, #apply { scroll-margin-top:calc(var(--head-h,65px) + var(--tabs-h,72px)); }
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -579,6 +602,18 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
         <a class="pill hero-cta cta" data-cta-location="hero" href="https://fireclub.liveklass.com/classes/274558/classroom/1191830/?preview=true" target="_blank" rel="noopener"><span data-slot="hero.cta">1강 무료 보고 기본부터 시작하기</span><svg class="hv-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18 L18 6 M8 6 H18 V16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/></svg></a>
       </div>
     </section>
+    <div class="hero-facts-band" aria-label="강의 핵심 정보">
+      <div class="wrap"><ul class="hero-facts">
+        <li><small>기초부터 순서대로</small><strong>VOD 7강</strong></li>
+        <li><small>내 속도로 반복해서</small><strong>180일 수강</strong></li>
+        <li><small>결제 전에 먼저</small><strong>1강 무료 공개</strong></li>
+        <li><small>공식 수강 후기 기준</small><strong>평균 5.0 / 123건</strong></li>
+      </ul></div>
+    </div>
+
+    <nav class="section-tabs" aria-label="섹션 바로가기">
+      <a href="#cause" data-tab="cause">공감과 수강 후기</a><a href="#instructor" data-tab="instructor">강사와 강의 소개</a><a href="#apply" data-tab="apply">자주 묻는 질문</a>
+    </nav>
 
     <section id="cause" data-section="2_reviews_empathy" aria-labelledby="cause-title">
       <div class="wrap">
@@ -924,5 +959,24 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 
 
 <script>(function(){var g=document.querySelector('.hero-graph');if(g&&g.pauseAnimations&&matchMedia('(prefers-reduced-motion: reduce)').matches){g.pauseAnimations();g.setCurrentTime(4);}})();</script>
+<script>
+// 섹션 탭: 헤더 높이 반영, 클릭 시 해당 섹션으로 이동, 스크롤 위치에 맞춰 주황 바 표시
+(function(){
+  var root=document.documentElement, head=document.querySelector('.site-head'), tabs=document.querySelector('.section-tabs');
+  if(!tabs) return;
+  var links=[].slice.call(tabs.querySelectorAll('a')), secs=links.map(function(a){return document.getElementById(a.dataset.tab);});
+  var size=function(){ root.style.setProperty('--head-h',(head?head.offsetHeight:0)+'px'); root.style.setProperty('--tabs-h',tabs.offsetHeight+'px'); };
+  var lock=0, set=function(id){ links.forEach(function(a){ var on=a.dataset.tab===id; a.classList.toggle('on',on); if(on) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current'); }); };
+  var spy=function(){ if(Date.now()<lock) return; var line=(head?head.offsetHeight:0)+tabs.offsetHeight+40, cur='';
+    secs.forEach(function(sec){ if(sec && sec.getBoundingClientRect().top<=line) cur=sec.id; }); set(cur); };
+  links.forEach(function(a){ a.addEventListener('click',function(e){ var t=document.getElementById(a.dataset.tab); if(!t) return; e.preventDefault();
+    set(a.dataset.tab); lock=Date.now()+900;
+    t.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth', block:'start'});
+    history.replaceState(null,'','#'+a.dataset.tab); }); });
+  size(); spy();
+  addEventListener('resize',function(){ size(); spy(); });
+  addEventListener('scroll',spy,{passive:true});
+})();
+</script>
 </body>
 </html>
