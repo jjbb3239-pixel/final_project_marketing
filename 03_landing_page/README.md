@@ -1,6 +1,7 @@
 # 랜딩페이지
 
 - **배포:** GitHub `main`에 푸시하면 Vercel(petitrich-landing)이 `python3 ../tools/sync_landing.py build`로 사이트를 만들어 자동 배포. 빌드가 실패하면 직전 사이트가 그대로 유지됨
+- **팀원 커밋 배포:** Vercel 무료 플랜은 소유자(jjbb3239-pixel)가 아닌 사람의 커밋을 자동 배포에서 막음. 그래서 팀원이 `main`에 Merge하면 GitHub Actions(`.github/workflows/vercel-deploy-hook.yml`)가 Vercel 배포 훅을 호출해 대신 배포함 (저장소 Actions 탭에서 성공 여부 확인). GitHub 커밋 옆 Vercel 빨간 X(Deployment was blocked)는 이 때문이고, Actions가 초록이면 정상 배포된 것
 - **사이트 파일(`index.html`, `qa-preview.html`, `sitemap.xml`)은 Git에 올리지 않음.** 배포 때마다 `landing.template.html` + `content/`로 새로 만들어짐 (`dist/`, .gitignore)
 
 ## 여러 명이 동시에 작업할 때 (엉키지 않게)

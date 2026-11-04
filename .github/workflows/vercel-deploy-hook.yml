@@ -1,0 +1,29 @@
+# 팀원 커밋도 배포되게 하기
+# Vercel 무료(Hobby) 플랜은 팀 소유자(jjbb3239-pixel)가 아닌 사람의 커밋을 자동 배포에서 막음
+# ("Git author ... must have access to the project on Vercel").
+# 그래서 main에 팀원 커밋이 올라오면 Vercel 배포 훅을 호출해 최신 main을 대신 배포함.
+# 소유자 커밋은 Vercel이 원래대로 자동 배포하므로 이 작업은 건너뜀 (이중 배포 방지).
+#
+# 필요한 설정: 저장소 Settings → Secrets and variables → Actions → VERCEL_DEPLOY_HOOK
+#   (값: Vercel 프로젝트 Settings → Git → Deploy Hooks 의 github-actions-main 주소)
+name: Vercel 배포 (팀원 커밋)
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    if: github.event.head_commit.author.username != 'jjbb3239-pixel'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vercel 배포 훅 호출
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::VERCEL_DEPLOY_HOOK 비밀값이 없습니다. 저장소 Settings → Secrets and variables → Actions 에 등록하세요."
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK"
+          echo "배포 요청 완료: ${{ github.event.head_commit.author.username }} 의 커밋 ${{ github.sha }}"
