@@ -342,8 +342,10 @@
       var T = window.TRACKING;
       var gtmOn = !/X{3}/.test(T.GTM_ID);
 
-      if (gtmOn) {
-        document.getElementById('gtm-noscript').src = 'https://www.googletagmanager.com/ns.html?id=' + T.GTM_ID;
+      // <noscript> 안의 iframe은 JS가 켜진 브라우저에선 DOM에 없음(null) → 없으면 건너뜀. 여기서 멈추면 아래 CTA 추적·UTM 전달이 모두 죽음
+      var gtmNs = document.getElementById('gtm-noscript');
+      if (gtmOn && gtmNs) {
+        gtmNs.src = 'https://www.googletagmanager.com/ns.html?id=' + T.GTM_ID;
       }
 
       // CTA 클릭 → dataLayer(cta_click) + Meta Pixel(Lead)
