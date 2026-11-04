@@ -599,7 +599,9 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 /* 강의 소개 소재: 16:9 원본 그대로 (잘림 없음) */
 .course-photo img { aspect-ratio:16/9; object-fit:contain; height:auto; }
 /* 강의 소개: 사진을 키우고 강의 목록의 세로 가운데에 */
-#curriculum .wire-course-layout { grid-template-columns:1.15fr .85fr; align-items:center; gap:44px; max-width:1180px; }
+#curriculum .wire-course-layout { grid-template-columns:1.15fr .85fr; align-items:start; gap:44px; max-width:1180px; }
+/* 사진 따라오기: 강의 목록을 내리는 동안 사진이 헤더·탭 아래에 붙어 따라옴 (목록이 끝나면 함께 멈춤) */
+@media(min-width:861px) { #curriculum .course-photo { position:sticky; top:calc(var(--head-h,65px) + var(--tabs-h,72px) + 32px); } }
 #curriculum .course-photo { padding:10px; }
 #curriculum .course-photo img { border-radius:10px; }
 @media(max-width:860px) { #curriculum .wire-course-layout { grid-template-columns:1fr; } }
