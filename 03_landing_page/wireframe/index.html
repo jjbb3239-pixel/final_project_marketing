@@ -576,6 +576,16 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 .instructor-photo figcaption span { display:block; font-size:clamp(17px,1.6vw,22px); font-weight:600; color:#3a3a40; }
 .instructor-photo figcaption strong { display:block; margin-top:6px; font-size:clamp(26px,2.6vw,38px); font-weight:800; letter-spacing:-0.02em; color:#151517; }
 #instructor .wire-trust { align-items:end; grid-template-columns:1.25fr .75fr; max-width:1120px; gap:40px; }
+/* 강사 소개 글: 사진(이미지 부분)의 세로 가운데에 오도록. 아래 캡션 높이만큼 아래 여백을 줘서 중심을 맞춤 */
+#instructor .wire-bio { align-self:center; padding-bottom:var(--cap-h,94px); }
+#instructor .wire-bio .wire-kicker { font-size:16px; margin-bottom:14px; }
+#instructor .wire-bio h3 { font-size:clamp(32px,3vw,42px); }
+#instructor .wire-bio h3 small { font-size:19px; }
+#instructor .wire-bio > p:not(.wire-kicker) { font-size:19px; line-height:1.75; }
+#instructor .wire-badges { gap:6px; flex-wrap:nowrap; }
+#instructor .wire-badges li { font-size:14px; padding:6px 10px; white-space:nowrap; }
+@media(max-width:400px) { #instructor .wire-badges { flex-wrap:wrap; } }
+@media(max-width:860px) { #instructor .wire-bio { padding-bottom:0; } }
 @media(max-width:860px) { #instructor .wire-trust { grid-template-columns:1fr; } }
 /* 수강 후기 카드 */
 .review-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; margin-top:36px; text-align:left; }
