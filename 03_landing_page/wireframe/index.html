@@ -636,6 +636,56 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
 .foot-disclaimer { color:var(--text); opacity:.8; }
 @media(max-width:600px) { .foot-links { font-size:13px; } .foot-links li + li::before { margin:0 7px; } }
 .foot-meta { display:flex; flex-wrap:wrap; gap:4px 24px; font-size:13px; color:var(--faint); margin:0; }
+</style><style id="motion">
+/* ── 상호작용·전환 (레퍼런스: Apple·Toss·Linear 랜딩의 공통 패턴)
+   1) 섹션 내용이 화면에 들어올 때 아래에서 살짝 떠오름(순서대로)
+   2) 섹션 탭: 주황 바 하나가 탭 사이를 미끄러지듯 이동
+   3) 버튼·카드: 올리면 살짝 뜨고, 누르면 살짝 눌림
+   4) FAQ·커리큘럼: 펼치고 접을 때 높이가 부드럽게 변함
+   동작 줄이기 설정이면 모두 꺼짐 */
+:root { --ease-out:cubic-bezier(.2,.75,.2,1); }
+main [id]:not(#hero) { scroll-margin-top:calc(var(--head-h,65px) + var(--tabs-h,72px) + 8px); }
+
+.motion .rv { opacity:0; transform:translateY(28px); transition:opacity .75s var(--ease-out), transform .75s var(--ease-out); transition-delay:var(--rv-d,0ms); will-change:opacity, transform; }
+.motion .rv.in { opacity:1; transform:none; }
+
+.section-tabs { position:sticky; }
+.section-tabs a::after { display:none; }
+.tab-ink { position:absolute; left:0; bottom:0; height:4px; width:0; background:#ff6b2b; opacity:0;
+  transition:transform .45s var(--ease-out), width .45s var(--ease-out), opacity .25s; pointer-events:none; }
+.section-tabs a { transition:color .25s; }
+.section-tabs a:active { transform:scale(.97); }
+
+.pill:not(.float-cta) { transition:background-color .2s, transform .25s var(--ease-out), box-shadow .25s; }
+.pill:not(.float-cta):hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(0,0,0,.25); }
+.pill:not(.float-cta):active { transform:translateY(0) scale(.97); box-shadow:none; transition-duration:.08s; }
+#hero .hero-cta { transition:background .2s, transform .25s var(--ease-out), box-shadow .25s; }
+#hero .hero-cta:hover { transform:translateY(-3px); box-shadow:0 18px 40px rgba(255,107,43,.35); }
+#hero .hero-cta:active { transform:scale(.985); box-shadow:none; transition-duration:.08s; }
+#hero .hero-cta .hv-arrow { transition:transform .25s var(--ease-out); }
+#hero .hero-cta:hover .hv-arrow { transform:translate(3px,-3px); }
+
+.wire-text-link { transition:opacity .2s, text-underline-offset .25s; }
+.wire-text-link:hover { text-underline-offset:9px; }
+.wire-text-link:active { opacity:.6; }
+
+.review-card, .resource-card, .wire-empathy, .hero-facts li { transition:transform .35s var(--ease-out), box-shadow .35s; }
+.review-card:hover { transform:translateY(-6px); box-shadow:0 18px 36px rgba(0,0,0,.28); }
+.resource-card:hover, .wire-empathy:hover { transform:translateY(-4px); box-shadow:0 16px 34px rgba(0,0,0,.18); }
+
+@supports (interpolate-size:allow-keywords) {
+  :root { interpolate-size:allow-keywords; }
+  details::details-content { block-size:0; overflow:hidden; transition:block-size .4s var(--ease-out), content-visibility .4s allow-discrete; }
+  details[open]::details-content { block-size:auto; }
+}
+details summary { transition:color .2s; }
+details summary:hover { color:var(--text); }
+details summary::after { transition:transform .3s var(--ease-out); }
+
+@media(prefers-reduced-motion:reduce) {
+  .motion .rv { opacity:1; transform:none; transition:none; }
+  .tab-ink { transition:none; }
+}
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -681,7 +731,7 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
     </div>
 
     <nav class="section-tabs" aria-label="섹션 바로가기">
-      <a href="#instructor" data-tab="instructor">강사와 강의 소개</a><a href="#cause" data-tab="cause">공감과 수강 후기</a><a href="#apply" data-tab="apply">자주 묻는 질문</a>
+      <a href="#instructor" data-tab="instructor">강사와 강의 소개</a><a href="#cause" data-tab="cause">공감과 수강 후기</a><a href="#apply" data-tab="apply">자주 묻는 질문</a><span class="tab-ink" aria-hidden="true"></span>
     </nav>
 
     <section id="instructor" data-section="2_trust_learning" aria-labelledby="instructor-title">
@@ -1075,6 +1125,58 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
   size(); spy();
   addEventListener('resize',function(){ size(); spy(); });
   addEventListener('scroll',spy,{passive:true});
+})();
+</script>
+<script>
+// 상호작용·전환: 스크롤 등장(순서대로), 섹션 탭 미끄러지는 바
+(function(){
+  var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 1) 스크롤 등장: 히어로는 제외(첫 화면은 바로 보이게)
+  if (!calm && 'IntersectionObserver' in window) {
+    var groups = [
+      '.hero-facts li',
+      'main section:not(#hero) .wire-heading',
+      '.instructor-photo', '.wire-bio',
+      '.wire-course-layout > *', '.wire-lessons details',
+      '.wire-outcomes .wire-three > article',
+      '.resource-card', '.wire-empathy', '.wire-inline-cta', '.wire-review-title', '.review-marquee',
+      '.wire-faq-layout > *', '.closing'
+    ];
+    var els = [];
+    groups.forEach(function(sel){ document.querySelectorAll(sel).forEach(function(el){ if (els.indexOf(el) < 0) els.push(el); }); });
+    // 같은 부모 안에서는 0.09초씩 차례로
+    els.forEach(function(el){
+      var sib = [].filter.call(el.parentNode.children, function(c){ return els.indexOf(c) > -1; });
+      el.style.setProperty('--rv-d', Math.min(sib.indexOf(el), 6) * 90 + 'ms');
+      el.classList.add('rv');
+    });
+    document.documentElement.classList.add('motion');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin:'0px 0px -8% 0px', threshold:0.08 });
+    els.forEach(function(el){ io.observe(el); });
+    // 탭·메뉴로 바로 이동했을 때 건너뛴 내용도 보이게
+    addEventListener('hashchange', function(){ setTimeout(function(){ els.forEach(function(el){ if (el.getBoundingClientRect().top < innerHeight) el.classList.add('in'); }); }, 700); });
+  }
+  // 2) 섹션 탭: 주황 바 하나가 현재/올린 탭으로 이동
+  var tabs = document.querySelector('.section-tabs'), ink = tabs && tabs.querySelector('.tab-ink');
+  if (!tabs || !ink) return;
+  var links = [].slice.call(tabs.querySelectorAll('a'));
+  var go = function(a){
+    if (!a) { ink.style.opacity = 0; return; }
+    ink.style.width = a.offsetWidth + 'px';
+    ink.style.transform = 'translateX(' + a.offsetLeft + 'px)';
+    ink.style.opacity = 1;
+  };
+  var current = function(){ return tabs.querySelector('a.on'); };
+  links.forEach(function(a){
+    a.addEventListener('mouseenter', function(){ go(a); });
+    a.addEventListener('focus', function(){ go(a); });
+  });
+  tabs.addEventListener('mouseleave', function(){ go(current()); });
+  new MutationObserver(function(){ if (!tabs.matches(':hover')) go(current()); }).observe(tabs, { subtree:true, attributes:true, attributeFilter:['class'] });
+  addEventListener('resize', function(){ go(current()); });
+  go(current());
 })();
 </script>
 </body>
