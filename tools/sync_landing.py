@@ -269,7 +269,8 @@ def cmd_build(argv):
         if item.name in SOURCE_ONLY or item.name.startswith("."):
             continue
         (shutil.copytree if item.is_dir() else shutil.copy2)(item, out / item.name)
-    (out / "index.html").write_text(page, encoding="utf-8")
+    # Publish the merged landing at the production homepage as well as /wireframe/.
+    shutil.copy2(out / "wireframe" / "index.html", out / "index.html")
     (out / "qa-preview.html").write_text(qa_version(qa_page), encoding="utf-8")
     (out / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

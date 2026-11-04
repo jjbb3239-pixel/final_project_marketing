@@ -1,5 +1,7 @@
 # 랜딩페이지
 
+- **운영 첫 화면:** 빌드 시 `wireframe/index.html`을 `dist/index.html`에도 복사해 기본 주소(`/`)에서 제공합니다. 새 랜딩 수정은 `wireframe/index.html`에서 진행하고, 블로그는 `/wireframe/blog/` 경로를 사용합니다.
+
 - **배포:** GitHub `main`에 푸시하면 Vercel(petitrich-landing)이 `python3 ../tools/sync_landing.py build`로 사이트를 만들어 자동 배포. 빌드가 실패하면 직전 사이트가 그대로 유지됨
 - **팀원 커밋 배포:** 저장소가 공개(public)라서 팀원 Merge도 Vercel이 바로 배포함 (Vercel은 공개 저장소의 공동 작업을 무료 플랜에서도 허용. 비공개였을 때는 소유자 외 커밋이 "Deployment was blocked"로 막혔음). 예비 장치로 GitHub Actions(`.github/workflows/vercel-deploy-hook.yml`)가 팀원 커밋 때 배포 훅을 한 번 더 호출함 → 같은 커밋이 두 번 배포될 수 있으나 문제 없음. 반영이 안 보이면 Actions 탭 → "Vercel 배포 (팀원 커밋)" → **Run workflow** (쓰기 권한 있는 협업자 누구나 가능, 그 시점의 최신 main을 배포)
 - **사이트 파일(`index.html`, `qa-preview.html`, `sitemap.xml`)은 Git에 올리지 않음.** 배포 때마다 `landing.template.html` + `content/`로 새로 만들어짐 (`dist/`, .gitignore)
