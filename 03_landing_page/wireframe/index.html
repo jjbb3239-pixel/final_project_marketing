@@ -563,16 +563,15 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
       <svg class="hero-graph" viewBox="0 0 1920 1080" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
         <defs>
           <linearGradient id="hg-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd2b0" stop-opacity=".13"/><stop offset="1" stop-color="#ffd2b0" stop-opacity=".02"/></linearGradient>
-          <linearGradient id="hg-line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#ffe2c4" stop-opacity=".12"/></linearGradient>
-          <radialGradient id="hg-glow"><stop offset="0" stop-color="#ffd9b0" stop-opacity=".3"/><stop offset="1" stop-color="#ffd9b0" stop-opacity="0"/></radialGradient>
+          <linearGradient id="hg-line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#ffe2c4" stop-opacity=".22"/></linearGradient>
+          <radialGradient id="hg-glow"><stop offset="0" stop-color="#ffd9b0" stop-opacity=".45"/><stop offset="1" stop-color="#ffd9b0" stop-opacity="0"/></radialGradient>
         </defs>
-        <path d="M0 1080 L0 1060 L310 980 L560 1080 Z" fill="#fff" fill-opacity=".04"/>
-        <path d="M0 1010 L310 915 L600 990 L740 875 L1920 185 L1920 1080 L0 1080 Z" fill="url(#hg-fill)"/>
-        <path id="hg-path" d="M0 1010 L310 915 L600 990 L740 875 L1920 185" fill="none" stroke="url(#hg-line)" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M0 985 L380 835 L560 895 L1000 647 L1200 700 L1580 368 L1728 263 L1920 481 L1920 1080 L0 1080 Z" fill="url(#hg-fill)"/>
+        <path id="hg-path" d="M0 985 L380 835 L560 895 L1000 647 L1200 700 L1580 368 L1728 263 L1920 481" fill="none" stroke="url(#hg-line)" stroke-width="2" stroke-linejoin="round"/>
         <g class="hg-dot">
-          <circle r="60" fill="url(#hg-glow)"><animate attributeName="r" values="46;66;46" dur="4s" repeatCount="indefinite"/></circle>
-          <circle r="23" fill="#ffd2a8" fill-opacity=".45"/>
-          <animateMotion dur="16s" repeatCount="indefinite" calcMode="spline" keyPoints="0.72;0.97;0.72" keyTimes="0;0.5;1" keySplines=".45 0 .55 1;.45 0 .55 1"><mpath href="#hg-path"/></animateMotion>
+          <circle r="60" fill="url(#hg-glow)"><animate attributeName="r" values="40;72;40" dur="3s" repeatCount="indefinite"/></circle>
+          <circle r="20" fill="#ffe1c2" fill-opacity=".6"><animate attributeName="fill-opacity" values=".45;.8;.45" dur="3s" repeatCount="indefinite"/></circle>
+          <animateMotion dur="18s" repeatCount="indefinite" calcMode="spline" keyPoints="0.6;0.873;0.6" keyTimes="0;0.5;1" keySplines=".45 0 .55 1;.45 0 .55 1"><mpath href="#hg-path"/></animateMotion>
         </g>
       </svg>
       <div class="wrap hero-v2-inner">
