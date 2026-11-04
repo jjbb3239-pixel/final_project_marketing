@@ -1,11 +1,43 @@
 # 랜딩페이지
 
-- AI로 제작 → Vercel 배포 (이 폴더를 Vercel 프로젝트 루트로 지정)
-- **자동 배포:** GitHub `main`에 푸시하면 Vercel(petitrich-landing)이 이 폴더를 자동으로 배포함. 다른 브랜치에 푸시하면 미리보기 주소가 따로 생김
-- **주의:** 사이트에 나가는 파일은 `index.html`. 디자인·구조는 `landing.template.html`을 고치고, `python3 tools/sync_landing.py --write`로 `index.html`을 다시 만든 뒤 둘 다 커밋 (Vercel은 빌드를 돌리지 않고 커밋된 `index.html`을 그대로 올림)
+- **배포:** GitHub `main`에 푸시하면 Vercel(petitrich-landing)이 `python3 ../tools/sync_landing.py build`로 사이트를 만들어 자동 배포. 빌드가 실패하면 직전 사이트가 그대로 유지됨
+- **사이트 파일(`index.html`, `qa-preview.html`, `sitemap.xml`)은 Git에 올리지 않음.** 배포 때마다 `landing.template.html` + `content/`로 새로 만들어짐 (`dist/`, .gitignore)
+
+## 여러 명이 동시에 작업할 때 (엉키지 않게)
+**누가 무엇을 고치나**
+| 고칠 것 | 파일 | 담당 |
+|---|---|---|
+| 문구·이미지 | 구글 드라이브 `랜딩소재/` → `pull`로 `content/`, `assets/` 갱신 | 드라이브 담당 1명만 `pull` 실행 |
+| 디자인·구조·스크립트 | `landing.template.html` | 누구나 (아래 순서대로) |
+| 와이어프레임·블로그 | `wireframe/` | 누구나 |
+| 광고·추적 문서 | `06_ads_tracking/` | 누구나 |
+
+**작업 순서 (매번)**
+```bash
+git switch main && git pull --rebase          # 1. 최신으로
+git switch -c 이름-작업내용                     # 2. 내 브랜치 (예: dahun-faq-style)
+# 3. 수정 → 확인
+python3 tools/sync_landing.py build           #    03_landing_page/dist/index.html 을 브라우저로 열어 확인
+git add -A && git commit -m "무엇을 왜 바꿨는지"
+git push -u origin 이름-작업내용                # 4. 푸시 → Vercel 미리보기 주소 생성
+```
+5. GitHub에서 Pull Request 생성 → 미리보기 확인 → **Merge** (Merge 하는 순간 운영 사이트 배포)
+- `main`에 직접 푸시하지 않기. 브랜치 → PR → Merge
+- PR을 합치기 직전 다른 사람 PR이 먼저 합쳐졌으면, 내 브랜치에서 `git pull --rebase origin main` 후 다시 푸시
+- 충돌이 나도 원본 파일끼리만 나므로 해당 줄만 고르면 됨 (자동 생성 파일 충돌은 더 이상 없음)
+- 광고 운영 중(1차 11/6~10, 2차 11/10~13)에는 Merge 전에 팀 채팅에 한 줄 알리기
+
+**드라이브 문구·이미지 반영 (담당 1명)**
+```bash
+python3 tools/sync_landing.py pull --dry   # 바뀔 내용 미리 보기
+python3 tools/sync_landing.py pull         # content/, assets/, utm.csv 갱신
+python3 tools/sync_landing.py build        # 확인
+```
+그다음 위 작업 순서대로 브랜치 → PR → Merge
+
 - CTA → 선택한 라이브클래스 상품 상세페이지 연결
 - 배포 URL:
-- 최종 제출 시 URL + HTML 파일 모두 제출
+- 최종 제출 시 URL + HTML 파일 모두 제출 (HTML 파일은 `python3 tools/sync_landing.py build` 후 `dist/index.html`)
 
 ## 구조 (와이어프레임 0~6)
 1 히어로 `#hero` · 2 조급함의 정체 `#cause` · 3 실수 `#mistakes` · 4 강의 철학 `#philosophy` · 5 강사 `#instructor` · 6 FAQ+신청 `#apply`

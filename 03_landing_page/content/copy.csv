@@ -1,0 +1,35 @@
+﻿slot,내용,설명
+seo.title,,"검색·공유 제목 (비우면 기존 값 유지, 30~40자)"
+seo.description,,검색·공유 설명 (80~120자)
+operator,,운영 주체 (계정명/팀명)
+contact,,문의 연락처
+hero.title,,1. 히어로 메인 문구
+hero.sub,,1. 히어로 서브 문구
+hero.cta,,1. 히어로 버튼 문구 (기본: 1강 무료로 먼저 보기)
+cause.title,,2. 조급함의 정체 - 섹션 제목
+cause.card1,,"원인 카드 1 (주변 사람). 첫 줄=카드 제목, 다음 줄부터 본문"
+cause.card2,,원인 카드 2 (뉴스·영상)
+cause.card3,,원인 카드 3 (노후 불안)
+mistakes.title,,3. 조급할 때 하는 실수 - 섹션 제목
+mistakes.card1,,실수 카드 1. 첫 줄=제목
+mistakes.card2,,실수 카드 2
+mistakes.card3,,실수 카드 3
+philosophy.title,,4. 강의 철학 - 섹션 제목
+philosophy.rush,,조급한 투자 (어수선한 톤). 줄마다 한 항목
+philosophy.calm,,이 강의의 투자 (정돈된 톤). 줄마다 한 항목
+instructor.title,,5. 누가 가르치나 - 섹션 제목
+instructor.bio,,강사 확인 가능한 이력. 줄마다 한 항목 (사진은 images/instructor.jpg)
+instructor.donts,,하지 않는 것 목록. 줄마다 한 항목
+apply.title,,6. FAQ + 신청 - 섹션 제목
+faq1.q,,FAQ 질문 1
+faq1.a,,FAQ 답변 1
+faq2.q,,FAQ 질문 2
+faq2.a,,FAQ 답변 2
+faq3.q,,FAQ 질문 3
+faq3.a,,FAQ 답변 3
+faq4.q,,FAQ 질문 4
+faq4.a,,FAQ 답변 4
+apply.refund,,환불 규정
+closing.title,,"6. 마지막 신청 블록 제목 (기본: 준비되면, 1강부터 천천히)"
+closing.sub,,6. 마지막 신청 블록 설명
+apply.cta,,신청 버튼 문구 (기본: 강의 자세히 보기)
