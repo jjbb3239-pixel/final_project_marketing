@@ -703,6 +703,37 @@ details summary::after { transition:transform .3s var(--ease-out); }
   .motion .rv { opacity:1; transform:none; transition:none; }
   .tab-ink { transition:none; }
 }
+</style><style id="responsive-tune">
+/* ── 모바일·태블릿 최적화 ── */
+/* 1) 태블릿·모바일: 헤더 메뉴 줄을 없애고(섹션 탭이 대신함) 블로그 링크만 로고 줄 오른쪽에 → 위에 붙는 영역 160~193px → 약 110px */
+@media(max-width:1000px) {
+  .site-head .head-row { flex-wrap:nowrap; min-height:56px; }
+  .site-head .wire-nav { order:0; flex-basis:auto; overflow:visible; padding:0; margin-left:auto; gap:0; }
+  .site-head .wire-nav a:not([href*="blog"]) { display:none; }
+  .site-head .wire-nav a { padding:12px 4px; font-size:14px; }
+  .site-head .brand { min-width:0; }
+}
+@media(max-width:400px) { .site-head .partner-logos { gap:9px; } .mt-logo { transform:scale(.9); transform-origin:left center; } }
+
+/* 2) 태블릿(세로 화면): 히어로가 화면 전체를 채우며 아래가 비던 문제 → 내용 높이에 맞춤 */
+@media(max-width:1000px) and (orientation:portrait) {
+  #hero.hero-v2 { min-height:0; padding:clamp(64px,10vw,110px) 0 clamp(64px,9vw,96px); }
+}
+
+/* 3) 터치 영역: 텍스트 링크·푸터 링크를 44px 이상으로 */
+.wire-text-link, .resource-link { padding:7px 0; }
+.foot-links a { display:inline-block; padding:12px 0; margin:-12px 0; }
+@media(pointer:coarse) { .section-tabs a { min-height:52px; } details summary { min-height:52px; } }
+
+/* 4) 좁은 화면(≤400px) 글자 줄바꿈 정리 */
+@media(max-width:400px) {
+  .hero-facts { padding:24px 20px; gap:22px 14px; }
+  .hero-facts strong { font-size:18px; }
+  .section-tabs a { font-size:13px; padding:0 4px; letter-spacing:-0.02em; }
+  #hero .hero-cta { font-size:16px; padding:18px 12px; }
+}
+/* 5) 큰 화면(≥1600px): 본문 폭을 조금 넓혀 양옆이 휑하지 않게 */
+@media(min-width:1600px) { :root { --max:1240px; } }
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
