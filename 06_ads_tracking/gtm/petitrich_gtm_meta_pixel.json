@@ -59,12 +59,6 @@
             "key": "supportDocumentWrite",
             "value": "false"
           }
-        ],
-        "setupTag": [
-          {
-            "tagName": "Meta 픽셀 - 기본 코드(PageView)",
-            "stopOnSetupFailure": true
-          }
         ]
       }
     ],
