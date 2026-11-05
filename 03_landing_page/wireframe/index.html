@@ -780,6 +780,8 @@ html.fp-on #intro .intro-panel { min-height:calc(100svh - var(--head-h,65px) - v
 #cause .review-head h2 .hl { color:#FF6C28; }
 #cause .review-head .lead { color:#151517; font-size:clamp(17px,1.6vw,22px); margin-top:18px; }
 #cause .review-marquee { margin-top:28px; }
+/* 후기 흐름을 화면 폭 전체로, 가운데 기준 (풀페이지 패널의 width:100%를 덮어씀) */
+html.fp-on #cause .fp > .review-marquee { align-self:flex-start; width:100vw!important; max-width:none; margin-left:calc(50% - 50vw); margin-right:0; }
 #cause .review-card { box-shadow:0 4px 14px rgba(0,0,0,.1); }
 #cause .review-stars { color:#FFC83D; }
 #cause .review-src { margin:10px 0 0; text-align:center; font-size:13px; color:#6b6b72; }
