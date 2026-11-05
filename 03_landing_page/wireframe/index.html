@@ -733,6 +733,53 @@ details summary::after { transition:transform .3s var(--ease-out); }
 }
 /* 5) 큰 화면(≥1600px): 본문 폭을 조금 넓혀 양옆이 휑하지 않게 */
 @media(min-width:1600px) { :root { --max:1240px; } }
+</style><style id="fullpage">
+/* 풀페이지: 한 화면 = 한 패널. 패널은 헤더·탭 아래 남은 높이를 채우고 내용은 세로 가운데 */
+html.fp-on main > section:not(#hero) { padding:0; border-bottom:0; }
+html.fp-on main [id]:not(#hero) { scroll-margin-top:calc(var(--head-h,65px) + var(--tabs-h,72px)); }
+html.fp-on #hero.hero-v2 { min-height:calc(100svh - var(--head-h,65px) - var(--band-h,120px) - var(--tabs-h,72px)); }
+html.fp-on :is(#cause,#instructor,#apply) .fp {
+  min-height:calc(100svh - var(--head-h,65px) - var(--tabs-h,72px));
+  display:flex; flex-direction:column; justify-content:center;
+  margin-top:0; border-top:0; padding-top:clamp(32px,5vh,72px); padding-bottom:clamp(32px,5vh,72px); box-sizing:border-box;
+}
+html.fp-on :is(#cause,#instructor,#apply) .fp > * { width:100%; }
+html.fp-on #cause .wire-inline-cta { margin-bottom:0; }
+html.fp-on #apply .closing { margin-top:0; }
+html.fp-on #apply .wire-risk { margin-top:24px; }
+/* PC 첫 화면: 히어로 + 핵심 정보 + 탭이 한 화면에 들어오도록 화면 높이에 맞춰 글씨·여백 조정 */
+@media (min-width:861px) {
+  html.fp-on #hero.hero-v2 { padding:clamp(32px,5vh,96px) 0 clamp(28px,4vh,56px); }
+  html.fp-on .hv-l1 { font-size:clamp(56px,min(8.6vw,11.5vh),166px); margin-bottom:clamp(16px,min(3.4vw,3vh),64px); }
+  html.fp-on .hv-l2, html.fp-on .hv-l3 { font-size:clamp(30px,min(5.5vw,7.3vh),106px); }
+  html.fp-on .hv-l2 { margin-bottom:clamp(6px,min(1.2vw,1.2vh),22px); }
+  html.fp-on #hero .hero-cta { font-size:clamp(20px,min(2.95vw,3.9vh),57px); margin-top:clamp(28px,min(7vw,6vh),140px); padding:clamp(16px,min(2.6vw,2.6vh),46px) 24px; }
+  html.fp-on .hero-facts-band { padding:clamp(12px,1.8vh,28px) 0; }
+  html.fp-on .hero-facts { padding:clamp(18px,2.4vh,36px) clamp(24px,3.4vw,60px); }
+  /* 화면보다 길던 패널을 한 화면에 맞춤: 사진·카드 폭을 화면 높이에 맞춰 줄임 */
+  html.fp-on #instructor .wire-trust { max-width:max(640px, min(1120px, calc(200svh - 935px))); }
+  html.fp-on #instructor .wire-resources .wire-heading { margin-bottom:28px; }
+  html.fp-on #instructor .wire-resources .wire-two { max-width:max(860px, min(1080px, calc(300svh - 1720px))); margin-inline:auto; }
+  html.fp-on #instructor .resource-photo { padding:10px; }
+  html.fp-on #instructor .resource-card > div { padding:20px 28px 22px; }
+  html.fp-on #instructor .resource-card .resource-link { margin-top:14px; }
+  html.fp-on #instructor .wire-resources.fp { padding-top:clamp(20px,2.6vh,56px); padding-bottom:clamp(20px,2.6vh,56px); }
+  html.fp-on #apply .fp:first-child { padding-top:clamp(20px,3vh,56px); padding-bottom:clamp(20px,3vh,56px); }
+}
+/* 화면 위치 점: PC 오른쪽 */
+.fp-dots { position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:30; display:flex; flex-direction:column; gap:12px; }
+.fp-dots button { position:relative; width:12px; height:12px; padding:0; border-radius:50%; border:2px solid rgba(255,255,255,.9); background:rgba(0,0,0,.35); box-shadow:0 0 0 1px rgba(0,0,0,.25); cursor:pointer; transition:transform .25s, background-color .25s; }
+.fp-dots button::before { content:""; position:absolute; inset:-8px; }
+.fp-dots button:hover { transform:scale(1.25); }
+.fp-dots button.on { background:#FF6C28; border-color:#FF6C28; transform:scale(1.2); }
+.fp-dots button span { position:absolute; right:22px; top:50%; transform:translateY(-50%); white-space:nowrap; font-size:13px; font-weight:600; color:#fff; background:rgba(17,17,17,.9); padding:4px 10px; border-radius:6px; opacity:0; pointer-events:none; transition:opacity .2s; }
+.fp-dots button:hover span, .fp-dots button:focus-visible span { opacity:1; }
+@media (max-width:860px), (pointer:coarse) { .fp-dots { display:none; } }
+/* 터치 기기: 스와이프하면 한 화면씩 붙어서 넘어감 (화면보다 긴 패널은 안에서 자유롭게 내려감) */
+html.fp-snap { scroll-snap-type:y mandatory; scroll-padding-top:calc(var(--head-h,65px) + var(--tabs-h,72px)); }
+html.fp-snap #hero, html.fp-snap main .fp, html.fp-snap footer { scroll-snap-align:start; scroll-snap-stop:always; }
+html.fp-snap #hero { scroll-margin-top:calc(-1 * var(--tabs-h,72px)); }
+html.fp-snap .hero-facts-band { scroll-snap-align:end; }
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -783,12 +830,15 @@ details summary::after { transition:transform .3s var(--ease-out); }
 
     <section id="cause" data-section="2_reviews_empathy" aria-labelledby="cause-title">
       <div class="wrap">
+      <div class="fp" data-fp="공감">
         <div class="wire-heading"><h2 id="cause-title">언제까지 <span class="hl">S&amp;P 500</span>만<br>찾아볼 건가요?</h2><p class="lead">ETF 다음으로 개별 성장주도 궁금해졌다면,<br>종목 이름을 더 모으기 전에 기업을 바라보는 기초부터 배워보세요.</p></div>
         <div class="wire-two">
           <article class="wire-empathy"><span class="wire-kicker">시작하고 싶은 마음</span><h3>“주변에선 미국 주식으로<br>번다는데, 나만 늦은 걸까요?”</h3><p>뉴스마다 새로운 종목이 나오고, 남의 수익 이야기가 들립니다. 조급할수록 필요한 건 다음 추천이 아니라, 내가 이해할 수 있는 투자 기준입니다.</p></article>
           <article class="wire-empathy"><span class="wire-kicker">망설이게 되는 마음</span><h3>“열심히 모은 돈인데,<br>모르고 사고 싶진 않아요.”</h3><p>오른다는 말만 믿고 사기에는 걱정됩니다. 복리와 기업의 이익, 환율과 세금까지 알아야 할 내용을 먼저 정리해 보세요.</p></article>
         </div>
         <div class="wire-inline-cta"><a class="pill cta" data-cta-location="empathy" href="https://fireclub.liveklass.com/classes/274558/classroom/1191830/?preview=true" target="_blank" rel="noopener">1강 무료 미리보기<span class="pill-arrow" aria-hidden="true">↗</span></a></div>
+      </div>
+      <div class="fp" data-fp="수강 후기">
         <div class="wire-review-title"><h3>평균 평점 5.0.<br>먼저 배운 수강생의 이야기.</h3><p>공식 강의 페이지의 실제 후기 중 학습 경험을 발췌했습니다.</p></div>
         <div class="review-marquee" aria-label="수강생 후기">
           <div class="review-track">
@@ -817,17 +867,20 @@ details summary::after { transition:transform .3s var(--ease-out); }
         <p class="wire-note">평점·후기 수 확인일: 2026.11.03.</p>
         <a class="wire-text-link" href="#curriculum">나에게 맞는 강의인지, 전체 강의 목차 보기 ↑</a>
       </div>
+      </div>
     </section>
 
     <section id="instructor" data-section="3_trust_learning" aria-labelledby="instructor-title">
       <div class="wrap">
+      <div class="fp" data-fp="강사 소개">
         <div class="wire-heading"><h2 id="instructor-title">강사를 알아보는 가장 확실한 방법,<br>설명을 직접 들어보는 것입니다.</h2></div>
         <div class="wire-trust">
           <figure class="instructor-photo" data-material="instructor"><img src="/wireframe/assets/instructor-kimuna.webp" width="1200" height="958" loading="lazy" decoding="async" alt="쁘띠리치 김운아 강사와 저서 《미국 성장주 처음 투자》, 《돈은 모든 것을 바꾼다》"><figcaption><span>《미국 성장주 처음 투자》 저자</span><strong>쁘띠리치 김운아</strong></figcaption></figure>
           <div class="wire-bio"><p class="wire-kicker">이 강의를 진행하는 사람</p><h3>쁘띠리치 <small>김운아</small></h3><p>미국 성장주 발굴부터 포트폴리오, 어려운 경제 용어와 환율·세금까지. 투자 입문자가 차례대로 살펴볼 주제를 7강에 담았습니다.</p><ul class="wire-badges"><li>파이어클럽 강사</li><li>미국 성장주 투자 입문</li><li>VOD 7강 진행</li></ul><a class="pill cta" data-cta-location="instructor" href="https://fireclub.liveklass.com/classes/274558/classroom/1191830/?preview=true" target="_blank" rel="noopener">김운아의 1강 무료 보기<span class="pill-arrow" aria-hidden="true">↗</span></a></div>
         </div>
 
-        <div class="wire-course" id="curriculum"><div class="wire-heading"><h2>미국 주식 입문의 정석,<br>기본부터 시작하는 기초 강의.</h2><p class="lead">개념을 이해하고, 투자 대상을 살펴보고, 내 계획을 생각하는 순서.<br>무엇을 배우는지 확인하고 나에게 맞는 강의인지 판단하세요.</p></div>
+      </div>
+        <div class="wire-course fp" data-fp="커리큘럼" id="curriculum"><div class="wire-heading"><h2>미국 주식 입문의 정석,<br>기본부터 시작하는 기초 강의.</h2><p class="lead">개념을 이해하고, 투자 대상을 살펴보고, 내 계획을 생각하는 순서.<br>무엇을 배우는지 확인하고 나에게 맞는 강의인지 판단하세요.</p></div>
           <div class="wire-course-layout"><figure class="media-space course-space course-photo" data-material="course"><img src="/wireframe/assets/course-intro.webp" width="1600" height="900" loading="lazy" decoding="async" alt="쁘띠리치(김운아) 강의 장면 · 마이너스 인생에서 순자산 40억원 파이어족, 엔비디아 200만원 투자로 8000% 수익률, 《돈은 모든 것을 바꾼다》 저자"></figure><div class="wire-lessons">
             <details open><summary>01 · 성장주 투자, 어렵지 않습니다.</summary><p>강의의 설명 방식과 난이도를 먼저 확인합니다. · 33분 51초 · 무료 공개</p></details>
             <details><summary>02 · 복리, ETF와 개별종목 이해하기</summary><p>복리의 개념과 여러 자산을 묶은 펀드인 ETF, 개별종목의 차이를 살펴봅니다. · 45분 24초</p></details>
@@ -839,27 +892,28 @@ details summary::after { transition:transform .3s var(--ease-out); }
           </div></div><a class="wire-text-link" href="https://fireclub.liveklass.com/classes/274558" target="_blank" rel="noopener">전체 강의 목차와 상세 정보 확인하기 ↗</a>
         </div>
 
-        <div class="wire-outcomes" id="long-term"><h2>당장 눈앞의 이익보다는,<br><span class="hl">10년 후 나의 미래</span>를 위해.</h2><p class="lead">막연한 기대를, 공부할 질문으로 바꾸는 시간.<br>수익을 약속하는 대신 강의에서 다루는 주제를 내 투자에 비추어 생각해 보세요.</p><div class="wire-three">
+        <div class="wire-outcomes fp" data-fp="수강 후 정리" id="long-term"><h2>당장 눈앞의 이익보다는,<br><span class="hl">10년 후 나의 미래</span>를 위해.</h2><p class="lead">막연한 기대를, 공부할 질문으로 바꾸는 시간.<br>수익을 약속하는 대신 강의에서 다루는 주제를 내 투자에 비추어 생각해 보세요.</p><div class="wire-three">
           <article><span>01</span><h3>투자 방식을 비교하기</h3><p>ETF와 개별종목의 차이를 알고, 어떤 점을 더 공부해야 할지 정리합니다.</p></article><article><span>02</span><h3>기업을 보는 용어 익히기</h3><p>PER와 EPS의 뜻을 이해하고, 기업의 이익과 주가를 살펴볼 기초를 쌓습니다.</p></article><article><span>03</span><h3>내 투자 계획 생각하기</h3><p>포트폴리오와 환율·세금을 함께 살피며, 내가 이해한 것과 더 알아볼 것을 구분합니다.</p></article>
         </div><a class="wire-text-link" href="#curriculum">장기 투자, 무엇부터 배울지 알아보기 ↑</a></div>
 
-        <div class="wire-resources"><div class="wire-heading"><h2>강의 밖의 이야기도,<br>차근차근 살펴보세요.</h2><p class="lead">강사의 공개 콘텐츠를 함께 살펴볼 수 있도록<br>네이버 카페와 유튜브 소개 공간을 마련했습니다.</p></div><div class="wire-two">
+        <div class="wire-resources fp" data-fp="커뮤니티"><div class="wire-heading"><h2>강의 밖의 이야기도,<br>차근차근 살펴보세요.</h2><p class="lead">강사의 공개 콘텐츠를 함께 살펴볼 수 있도록<br>네이버 카페와 유튜브 소개 공간을 마련했습니다.</p></div><div class="wire-two">
           <article class="resource-card"><figure class="media-space resource-space resource-photo" data-material="cafe"><img src="/wireframe/assets/cafe-jaerins-life.webp" width="1081" height="604" loading="lazy" decoding="async" alt="쁘띠리치 네이버 카페 「재린스 라이프」 메인 화면 · 일상이 재테크가 되는 곳"></figure><div><h3>함께 읽고, 생각하는 공간</h3><p>강사 네이버 카페의 소개 이미지와 공식 주소를 넣을 자리입니다.</p><a class="wire-text-link resource-link" href="https://cafe.naver.com/jaerinslife" target="_blank" rel="noopener">네이버 카페 바로가기 ↗</a></div></article>
           <article class="resource-card"><figure class="media-space resource-space resource-photo" data-material="youtube"><img src="/wireframe/assets/youtube-petitrich.webp" width="1077" height="583" loading="lazy" decoding="async" alt="유튜브 채널 「쁘띠리치 운아, 일상이 재테크가 되는 곳」 메인 화면"></figure><div><h3>설명하는 모습을 더 보고 싶다면</h3><p>강사 유튜브의 대표 영상과 공식 주소를 넣을 자리입니다.</p><a class="wire-text-link resource-link" href="https://www.youtube.com/@%EC%81%98%EB%9D%A0%EB%A6%AC%EC%B9%98_%EC%9A%B4%EC%95%84" target="_blank" rel="noopener">유튜브 채널 바로가기 ↗</a></div></article>
         </div></div>
       </div>
     </section>
 
-    <section id="apply" data-section="4_faq_apply" aria-labelledby="apply-title"><div class="wrap"><div class="wire-heading"><h2 id="apply-title">궁금한 점을 확인하고,<br>내 속도로 시작하세요.</h2></div><div class="wire-faq-layout"><div>
+    <section id="apply" data-section="4_faq_apply" aria-labelledby="apply-title"><div class="wrap"><div class="fp" data-fp="자주 묻는 질문"><div class="wire-heading"><h2 id="apply-title">궁금한 점을 확인하고,<br>내 속도로 시작하세요.</h2></div><div class="wire-faq-layout"><div>
       <details><summary>주식을 처음 배우는데 괜찮을까요?</summary><p>성장주 투자 입문 강의로 복리, ETF·개별종목, 경제 용어 등 기초 주제를 다룹니다. 무료 1강으로 설명이 나에게 맞는지 먼저 확인해 보세요.</p></details>
       <details><summary>컴퓨터를 잘 못해도 수강할 수 있나요?</summary><p>공식 무료 강의실에서 1강 재생을 먼저 확인해 보세요. 가입과 결제, 수강 방법이 어렵다면 신청 전에 판매처에 문의해 주세요.</p></details>
       <details><summary>강의는 언제까지 볼 수 있나요?</summary><p>상품에 표시된 수강권은 180일입니다. 수강 시작일과 종료일 등 세부 조건은 결제 전 공식 강의 페이지에서 확인해 주세요.</p></details>
       <details><summary>환불 조건은 어떻게 되나요?</summary><p>결제 시점에 안내되는 판매처 환불 규정을 따릅니다. 무료 강의를 먼저 확인하고, 신청 전 공식 페이지에서 환불 조건을 확인해 주세요.</p></details>
       <details><summary>강의를 들으면 수익이 보장되나요?</summary><p>수익이나 원금 보전을 보장하지 않습니다. 투자에는 원금 손실 위험이 있으며, 최종 판단과 책임은 투자자 본인에게 있습니다.</p></details>
     </div><div class="price"><p class="wire-kicker">온 가족 1억 만드는 미국 성장주 투자 입문</p><p class="wire-original">정가 <s>100,000원</s></p><p class="wire-price"><span>41%</span> 59,000<small>원</small></p><p class="wire-note">총 결제 금액 기준</p><dl><dt>구성</dt><dd>VOD 총 7강</dd><dt>수강권</dt><dd>180일</dd><dt>미리보기</dt><dd>1강 무료 공개</dd></dl><a class="pill cta" data-cta-location="price" href="https://fireclub.liveklass.com/classes/274558" target="_blank" rel="noopener">전체 강의 수강 신청하기<span class="pill-arrow" aria-hidden="true">↗</span></a><p class="wire-note">공식 상품 페이지로 이동합니다. 가격과 수강 조건을 확인한 후 신청하세요.</p></div></div>
+      </div><div class="fp" data-fp="시작하기">
       <div class="closing"><p class="wire-kicker">마지막 결정은, 충분히 확인한 뒤에.</p><h2 data-slot="closing.title">남들이 좋다고 추천하는 종목,<br>이제는 이유를 알고 투자하세요.</h2><p data-slot="closing.sub">첫 시작은 무료 1강으로. 강의의 설명과 목차가 나에게 맞는지 확인해 보세요.</p><a id="cta-main" class="pill cta" data-cta-location="apply" href="https://fireclub.liveklass.com/classes/274558/classroom/1191830/?preview=true" target="_blank" rel="noopener">1강 무료 미리보기<span class="pill-arrow" aria-hidden="true">↗</span></a><p class="wire-buy-note">전체 강의 59,000원 · 총 7강 · 180일 수강</p><a class="wire-text-link cta" data-cta-location="apply_secondary" href="https://fireclub.liveklass.com/classes/274558" target="_blank" rel="noopener">전체 강의 수강 신청하기 ↗</a></div>
       <p class="wire-risk">투자에는 원금 손실 위험이 있습니다. 상품명에 포함된 ‘1억’은 특정 수익이나 자산 달성을 보장하지 않습니다.</p>
-    </div></section>
+    </div></div></section>
   </main>
 
 
@@ -1222,6 +1276,87 @@ details summary::after { transition:transform .3s var(--ease-out); }
   new MutationObserver(function(){ if (!tabs.matches(':hover')) go(current()); }).observe(tabs, { subtree:true, attributes:true, attributeFilter:['class'] });
   addEventListener('resize', function(){ go(current()); });
   go(current());
+})();
+</script>
+<script>
+/* 풀페이지 넘김: PC는 휠·키 한 번에 한 화면씩 부드럽게 이동, 화면보다 긴 패널은 끝까지 읽은 뒤 다음 화면으로 */
+(function(){
+  var root=document.documentElement, head=document.querySelector('header'), tabs=document.querySelector('.section-tabs'), band=document.querySelector('.hero-facts-band');
+  var panels=[document.getElementById('hero')].concat([].slice.call(document.querySelectorAll('main .fp')));
+  if(!panels[0]||panels.length<2) return;
+  root.classList.add('fp-on');
+  var desk=matchMedia('(min-width:861px) and (pointer:fine)'), calm=matchMedia('(prefers-reduced-motion: reduce)');
+  var setBand=function(){ root.style.setProperty('--band-h',(band?band.offsetHeight:0)+'px'); };
+  setBand(); addEventListener('resize',setBand);
+  var mode=function(){ root.classList.toggle('fp-snap',!desk.matches); };
+  mode(); desk.addEventListener&&desk.addEventListener('change',mode);
+
+  var stick=function(){ return (head?head.offsetHeight:0)+(tabs?tabs.offsetHeight:0); };
+  var maxY=function(){ return root.scrollHeight-innerHeight; };
+  var stops=function(){
+    var s=stick(), m=maxY(), a=panels.map(function(el,i){ return i? Math.min(m,Math.max(0,Math.round(el.getBoundingClientRect().top+scrollY-s))) : 0; });
+    if(m-a[a.length-1]>4) a.push(m); // 푸터
+    return a;
+  };
+  var cur=function(a){ var y=scrollY, i=0; for(var k=0;k<a.length;k++){ if(a[k]<=y+4) i=k; } return i; };
+
+  var busy=false, quiet=null, raf=0;
+  var release=function(){ clearTimeout(quiet); quiet=setTimeout(function(){ if(!raf) busy=false; },180); };
+  var go=function(y){
+    y=Math.max(0,Math.min(maxY(),y)); busy=true; cancelAnimationFrame(raf);
+    var from=scrollY, d=y-from, t0=performance.now(), dur=calm.matches?0:Math.min(950,Math.max(600,Math.abs(d)*.6));
+    if(!dur||Math.abs(d)<2){ scrollTo({top:y,behavior:'instant'}); raf=0; release(); return; }
+    var ease=function(t){ return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; };
+    var step=function(now){ var t=Math.min(1,(now-t0)/dur); scrollTo({top:from+d*ease(t),behavior:'instant'}); if(t<1){ raf=requestAnimationFrame(step); } else { raf=0; release(); } };
+    raf=requestAnimationFrame(step);
+  };
+  // dir: 1 아래, -1 위. 이동했으면 true, 패널 안에서 그냥 스크롤해야 하면 false
+  var page=function(dir){
+    var a=stops(), i=cur(a), y=scrollY, view=innerHeight-stick();
+    var next=i+1<a.length?a[i+1]:maxY(), tall=next-a[i]>view+4;
+    if(dir>0){
+      if(i+1>=a.length) return false;
+      if(tall && y+view<next-4) return false;         // 긴 패널: 아직 읽는 중
+      go(a[i+1]); return true;
+    }
+    if(y>a[i]+4){ if(tall) return false; go(a[i]); return true; }
+    if(i===0) return false;
+    go(Math.max(a[i-1],a[i]-view)); return true;      // 이전 패널이 길면 그 끝부분으로
+  };
+
+  addEventListener('wheel',function(e){
+    if(!desk.matches||e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY)) return;
+    if(busy){ e.preventDefault(); release(); return; }
+    if(Math.abs(e.deltaY)<2) return;
+    if(page(e.deltaY>0?1:-1)) e.preventDefault();
+  },{passive:false});
+
+  addEventListener('keydown',function(e){
+    if(!desk.matches||e.altKey||e.ctrlKey||e.metaKey) return;
+    var t=e.target, tag=t&&t.tagName;
+    if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||(t&&t.isContentEditable)) return;
+    var k=e.key, dir=0;
+    if(k==='PageDown'||k==='ArrowDown'||(k===' '&&!e.shiftKey)) dir=1;
+    else if(k==='PageUp'||k==='ArrowUp'||(k===' '&&e.shiftKey)) dir=-1;
+    else if(k==='Home'){ e.preventDefault(); go(0); return; }
+    else if(k==='End'){ e.preventDefault(); go(maxY()); return; }
+    if(!dir) return;
+    if(k===' '&&tag&&/^(A|BUTTON|SUMMARY)$/.test(tag)) return;
+    if(busy){ e.preventDefault(); return; }
+    if(page(dir)) e.preventDefault();
+  });
+
+  // 오른쪽 위치 점
+  var nav=document.createElement('nav'); nav.className='fp-dots'; nav.setAttribute('aria-label','화면 이동');
+  var names=['메인'].concat(panels.slice(1).map(function(el){ return el.getAttribute('data-fp')||''; }));
+  var dots=names.map(function(n,i){
+    var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label',n+' 화면으로'); b.innerHTML='<span aria-hidden="true"></span>'; b.firstChild.textContent=n;
+    b.addEventListener('click',function(){ go(stops()[i]); }); nav.appendChild(b); return b;
+  });
+  document.body.appendChild(nav);
+  var mark=function(){ var a=stops(), i=Math.min(cur(a),dots.length-1); dots.forEach(function(d,k){ var on=k===i; d.classList.toggle('on',on); if(on) d.setAttribute('aria-current','true'); else d.removeAttribute('aria-current'); }); };
+  var tk=false; addEventListener('scroll',function(){ if(!tk){ tk=true; requestAnimationFrame(function(){ tk=false; mark(); }); } },{passive:true});
+  addEventListener('resize',mark); mark();
 })();
 </script>
 </body>
