@@ -499,6 +499,7 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
     radial-gradient(ellipse 60% 70% at 75% 55%, rgba(246,112,48,.95), rgba(214,82,26,.6) 40%, transparent 75%),
     linear-gradient(120deg, #1f0e09 0%, #5a1f0c 32%, #9a3412 58%, #d0561e 100%);
 }
+.hero-graph { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
 .hero-v2-inner { text-align:center; }
 .hero-v2 h1 { margin:0; font-weight:800; letter-spacing:-0.025em; line-height:1.2; }
 .hero-v2 h1 > span { display:block; }
@@ -965,13 +966,6 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
 .toc-list .ln { font-size:clamp(18px,min(1.7vw,2.8vh),26px); }
 .toc-more { margin-top:clamp(10px,2vh,22px); }
 .toc-cta { margin-top:clamp(14px,3.2vh,40px); }
-</style><style id="hero-bg-art">
-/* 히어로 배경 그래프: 원본 SVG(viewBox 0 0 1947 915)를 그라데이션 위 독립 이미지 레이어로, 하단 중앙 고정·전체 표시 */
-.hero-bg-art { position:absolute; left:50%; bottom:0; z-index:-1; display:block; width:min(100%,1600px); height:auto; aspect-ratio:1947/915; transform:translateX(-50%); pointer-events:none; user-select:none; }
-@media (min-width:861px) {
-  /* 세로로 짧은 화면: SVG 전체 높이(너비 × 915/1947)만큼은 히어로 높이를 확보 */
-  #hero.hero-v2, html.fp-on #hero.hero-v2 { min-height:max(calc(100svh - var(--head-real,65px)), calc(min(100vw,1600px) * 915 / 1947)); }
-}
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -986,7 +980,20 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
 
   <main>
     <section id="hero" class="hero hero-v2" data-section="1_hero" aria-labelledby="hero-title">
-      <img class="hero-bg-art" src="/wireframe/assets/hero-background.svg" width="1947" height="915" alt="" aria-hidden="true" decoding="async" fetchpriority="high">
+      <svg class="hero-graph" viewBox="0 0 1920 1080" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="hg-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd2b0" stop-opacity=".13"/><stop offset="1" stop-color="#ffd2b0" stop-opacity=".02"/></linearGradient>
+          <linearGradient id="hg-line" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#ffe2c4" stop-opacity=".22"/></linearGradient>
+          <radialGradient id="hg-glow"><stop offset="0" stop-color="#ffd9b0" stop-opacity=".45"/><stop offset="1" stop-color="#ffd9b0" stop-opacity="0"/></radialGradient>
+        </defs>
+        <path d="M0 985 L380 835 L560 895 L1000 647 L1200 700 L1580 368 L1728 263 L1920 481 L1920 1080 L0 1080 Z" fill="url(#hg-fill)"/>
+        <path id="hg-path" d="M0 985 L380 835 L560 895 L1000 647 L1200 700 L1580 368 L1728 263 L1920 481" fill="none" stroke="url(#hg-line)" stroke-width="2" stroke-linejoin="round"/>
+        <g class="hg-dot">
+          <circle r="60" fill="url(#hg-glow)"><animate attributeName="r" values="40;72;40" dur="3s" repeatCount="indefinite"/></circle>
+          <circle r="20" fill="#ffe1c2" fill-opacity=".6"><animate attributeName="fill-opacity" values=".45;.8;.45" dur="3s" repeatCount="indefinite"/></circle>
+          <animateMotion dur="18s" repeatCount="indefinite" calcMode="spline" keyPoints="0.6;0.873;0.6" keyTimes="0;0.5;1" keySplines=".45 0 .55 1;.45 0 .55 1"><mpath href="#hg-path"/></animateMotion>
+        </g>
+      </svg>
       <div class="wrap hero-v2-inner">
         <h1 id="hero-title" data-slot="hero.title"><span class="hv-l1">미국 성장주<svg class="hv-spark" viewBox="0 0 120 180" aria-hidden="true" focusable="false"><path d="M60 0 C61.2 34 62 44 120 50 C62 56 61.2 66 60 180 C58.8 66 58 56 0 50 C58 44 58.8 34 60 0Z" fill="#ffd77a"/></svg></span><span class="hv-l2">따라 사긴 불안하고</span><span class="hv-l3">지켜만 보긴 아쉽다면.</span></h1>
         <a class="pill hero-cta cta" data-cta-location="hero" href="https://fireclub.liveklass.com/classes/274558/classroom/1191830/?preview=true" target="_blank" rel="noopener"><span data-slot="hero.cta">1강 무료 보고 기본부터 시작하기</span><svg class="hv-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18 L18 6 M8 6 H18 V16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/></svg></a>
@@ -1415,6 +1422,7 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
 
 
 
+<script>(function(){var g=document.querySelector('.hero-graph');if(g&&g.pauseAnimations&&matchMedia('(prefers-reduced-motion: reduce)').matches){g.pauseAnimations();g.setCurrentTime(4);}})();</script>
 <script>
 // 섹션 탭: 헤더 높이 반영, 클릭 시 해당 섹션으로 이동, 스크롤 위치에 맞춰 주황 바 표시
 (function(){
