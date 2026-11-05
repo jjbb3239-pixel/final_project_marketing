@@ -17,3 +17,17 @@ body,button,input,textarea,select{font-family:'Project Pretendard',sans-serif!im
 /* 모바일: 로고 줄에 '1강 무료 미리보기' 버튼까지 한 줄로 (로고 옆 문구 삭제 후) */
 @media(max-width:600px){.site-head .brand{flex-wrap:nowrap;min-width:0}.site-head .partner-logos{gap:10px!important}.head-cta{padding:8px 11px;white-space:nowrap}}
 @media(max-width:370px){.site-head .partner-logos{zoom:.85}.head-row{gap:8px}.head-cta{font-size:12px;padding:7px 10px}}
+
+/* 헤더: 랜딩과 같게 — 스크롤해도 따라오지 않음, 메뉴는 '자주 묻는 질문'·'블로그' 두 개를 오른쪽에, 밑줄 없음 */
+.site-head{position:relative}
+.site-head .head-row{min-height:64px;flex-wrap:nowrap;padding-top:0;padding-bottom:0;gap:16px}
+.site-head .wire-nav{order:0;width:auto;margin-left:auto;overflow:visible;gap:28px;padding:0}
+.site-head .wire-nav a{border-bottom:0;text-decoration:none;color:#d6d6da;font-size:15px;font-weight:600;padding:12px 0;transition:color .2s}
+.site-head .wire-nav a:hover,.site-head .wire-nav a[aria-current]{color:#FF6C28;border:0}
+html{scroll-padding-top:24px}
+@media(max-width:1000px){.site-head .wire-nav{gap:18px}.site-head .wire-nav a{font-size:14px;padding:12px 2px}}
+@media(max-width:400px){.site-head .wire-nav{gap:12px}.site-head .wire-nav a{font-size:13px}.site-head .brand{transform:scale(.76);transform-origin:left center}}
+@media(max-width:350px){.site-head .brand{transform:scale(.62)}.site-head .wire-nav{gap:10px}.site-head .wire-nav a{font-size:12.5px}}
+/* 글 끝 순서: 강의 안내 박스 → 이어서 읽기 → 원문과 참고 자료 */
+.prose .article-cta{margin-top:56px}
+.prose .article-cta + .related{margin-top:48px}
