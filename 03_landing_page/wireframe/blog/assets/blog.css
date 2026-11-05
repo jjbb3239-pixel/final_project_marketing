@@ -31,3 +31,6 @@ html{scroll-padding-top:24px}
 /* 글 끝 순서: 강의 안내 박스 → 이어서 읽기 → 원문과 참고 자료 */
 .prose .article-cta{margin-top:56px}
 .prose .article-cta + .related{margin-top:48px}
+
+/* 글 표지: 원본 비율 유지 */
+.article-cover img{height:auto;aspect-ratio:1600/914;display:block}
