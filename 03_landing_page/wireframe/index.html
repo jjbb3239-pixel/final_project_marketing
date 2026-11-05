@@ -754,12 +754,11 @@ html.fp-on #apply .wire-risk { margin-top:24px; }
 .fp-dots button:hover span, .fp-dots button:focus-visible span { opacity:1; }
 @media (max-width:860px), (pointer:coarse) { .fp-dots { display:none; } }
 /* 터치 기기: 스와이프하면 한 화면씩 붙어서 넘어감 (화면보다 긴 패널은 안에서 자유롭게 내려감) */
-html.fp-snap { scroll-snap-type:y mandatory; scroll-padding-top:calc(var(--head-h,65px) + var(--tabs-h,72px)); }
-html.fp-snap #hero, html.fp-snap main .fp, html.fp-snap footer { scroll-snap-align:start; scroll-snap-stop:always; }
-/* 첫 화면 스냅은 헤더(맨 위) 기준: 탭 높이만큼 빼서 정확히 0에 멈춤 */
-html.fp-snap #hero { scroll-snap-align:none; }
-html.fp-snap .site-head { scroll-snap-align:start; scroll-snap-stop:always; scroll-margin-top:calc(-1 * var(--tabs-h,72px)); }
-html.fp-snap #intro .fp { scroll-margin-top:calc(-1 * var(--tabs-h,72px)); }
+/* 모바일 스냅: 음수 여백 없이(사파리 호환) — 첫 화면은 헤더 맨 위(0), 탭 아래 화면들은 탭 높이만큼 띄워서 멈춤 */
+html.fp-snap { scroll-snap-type:y mandatory; scroll-padding-top:0; }
+html.fp-snap .site-head { scroll-snap-align:start; scroll-snap-stop:always; scroll-margin-top:0; }
+html.fp-snap #intro .fp { scroll-snap-align:start; scroll-snap-stop:always; scroll-margin-top:0; }
+html.fp-snap main section:not(#intro) .fp, html.fp-snap footer { scroll-snap-align:start; scroll-snap-stop:always; scroll-margin-top:var(--tabs-h,72px); }
 </style><style id="panels-v3">
 /* ---- 2페이지 인트로: 검은 배경 + 핵심 정보, 섹션 탭은 이 아래부터 ---- */
 #intro { padding:0; border-bottom:0; background:#121212; }
@@ -946,6 +945,15 @@ html.fp-on #apply .fp > .closing { display:flex; flex-direction:column; justify-
 @media(max-width:350px) { .site-head .brand { transform:scale(.62); } .site-head .wire-nav { gap:10px; } .site-head .wire-nav a { font-size:12.5px; } }
 /* 노트북 받침이 좁은 화면에서 옆으로 1px 넘치지 않게 */
 @media(max-width:600px) { .laptop, html.fp-on #instructor .lecture-intro .laptop { width:calc(100% - 44px); } }
+</style><style id="hero-fit">
+/* PC 히어로: 헤더부터 CTA까지 한 화면에 들어오도록 글씨·여백을 화면 높이에 맞춰 조정 */
+@media (min-width:861px) {
+  #hero.hero-v2 { min-height:calc(100svh - var(--head-real,65px)); padding:clamp(28px,6vh,150px) 0 clamp(28px,5vh,64px); }
+  #hero .hv-l1 { font-size:clamp(48px,min(8.6vw,14vh),166px); margin-bottom:clamp(12px,min(3.4vw,3.6vh),64px); }
+  #hero .hv-l2, #hero .hv-l3 { font-size:clamp(28px,min(5.5vw,8.6vh),106px); }
+  #hero .hv-l2 { margin-bottom:clamp(4px,min(1.2vw,1.4vh),22px); }
+  #hero .hero-cta { font-size:clamp(18px,min(2.95vw,4.4vh),57px); margin-top:clamp(24px,min(7vw,7vh),140px); padding:clamp(14px,min(2.6vw,3vh),46px) 24px; }
+}
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
