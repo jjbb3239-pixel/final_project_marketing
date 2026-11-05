@@ -954,6 +954,18 @@ html.fp-on #apply .fp > .closing { display:flex; flex-direction:column; justify-
   #hero .hv-l2 { margin-bottom:clamp(4px,min(1.2vw,1.4vh),22px); }
   #hero .hero-cta { font-size:clamp(18px,min(2.95vw,4.4vh),57px); margin-top:clamp(24px,min(7vw,7vh),140px); padding:clamp(14px,min(2.6vw,3vh),46px) 24px; }
 }
+</style><style id="toc-fit">
+/* 목차 소개: 2강만 먼저 보이고, 화면 높이에 맞춰 글씨·간격을 늘리고 줄여 한 화면에 */
+html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); padding-bottom:clamp(16px,3.4vh,64px); }
+#instructor .toc-panel h2 { margin-top:clamp(12px,2.2vh,28px); font-size:clamp(26px,min(3.2vw,5.2vh),48px); }
+#instructor .toc-panel .lead { margin-top:clamp(10px,1.8vh,22px); font-size:clamp(15px,min(1.5vw,2.4vh),22px); }
+.toc-list { width:min(100%,800px)!important; margin-top:clamp(16px,4vh,52px); gap:clamp(8px,1.4vh,14px); }
+.toc-list li { padding:clamp(11px,2vh,22px) 24px; }
+.toc-list h3 { font-size:clamp(16px,min(1.4vw,2.2vh),20px); }
+.toc-list p { font-size:clamp(13px,min(1.1vw,1.8vh),16px); }
+.toc-list .ln { font-size:clamp(18px,min(1.7vw,2.8vh),26px); }
+.toc-more { margin-top:clamp(10px,2vh,22px); }
+.toc-cta { margin-top:clamp(14px,3.2vh,40px); }
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -1066,7 +1078,7 @@ html.fp-on #apply .fp > .closing { display:flex; flex-direction:column; justify-
           <ol class="toc-list" id="toc-list">
             <li><span class="ln">01</span><div><h3>성장주 투자, 어렵지 않습니다.</h3><p>강의의 설명 방식과 난이도를 먼저 확인합니다.</p></div><span class="lt">33분 51초<em>무료 공개</em></span></li>
             <li><span class="ln">02</span><div><h3>복리, ETF와 개별종목 이해하기</h3><p>복리의 개념과 여러 자산을 묶은 펀드인 ETF, 개별종목의 차이를 살펴봅니다.</p></div><span class="lt">45분 24초</span></li>
-            <li><span class="ln">03</span><div><h3>미국 성장주, 발굴부터 투자까지</h3><p>성장주를 찾아보고 투자로 연결하는 과정을 배웁니다.</p></div><span class="lt">38분 39초</span></li>
+            <li class="lesson-more" hidden><span class="ln">03</span><div><h3>미국 성장주, 발굴부터 투자까지</h3><p>성장주를 찾아보고 투자로 연결하는 과정을 배웁니다.</p></div><span class="lt">38분 39초</span></li>
             <li class="lesson-more" hidden><span class="ln">04</span><div><h3>가족의 투자 포트폴리오 만들기</h3><p>여러 투자 자산을 어떻게 구성할지 생각해 봅니다.</p></div><span class="lt">51분 38초</span></li>
             <li class="lesson-more" hidden><span class="ln">05</span><div><h3>PER·EPS, 경제 용어 알아보기</h3><p>PER는 주가수익비율, EPS는 주당순이익입니다. 주가와 기업의 이익을 이해할 기초 용어를 배웁니다.</p></div><span class="lt">31분 49초</span></li>
             <li class="lesson-more" hidden><span class="ln">06</span><div><h3>환율·양도소득세·매매 시점</h3><p>미국 주식 투자에서 알아둘 환율과 세금, 사고파는 시점을 살펴봅니다.</p></div><span class="lt">30분 5초</span></li>
