@@ -14,7 +14,17 @@
     "google_ads": [
       {"round": "1차", "content": "google_1차_입문", "term": "{keyword}"},
       {"round": "2차", "content": "google_2차_입문", "term": "{keyword}"}
-    ]
+    ],
+    "viral": {
+      "campaign": "organic_viral",
+      "utm_medium": "social",
+      "channels": [
+        {"name": "네이버 블로그", "utm_source": "naver_blog"},
+        {"name": "인스타그램",   "utm_source": "instagram"},
+        {"name": "스레드",       "utm_source": "threads"},
+        {"name": "티스토리",     "utm_source": "tistory"}
+      ]
+    }
   },
 
   "image_slots": {

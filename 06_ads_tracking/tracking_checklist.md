@@ -25,6 +25,16 @@ ID는 `03_landing_page/index.html` 상단 `window.TRACKING` 두 값만 바꾸면
 - 광고 URL: `06_ads_tracking/utm.csv`의 Google 행 (`utm_term={keyword}`는 구글이 실제 키워드로 바꿔 줌). 랜딩 코드가 UTM을 CTA 링크로 넘겨 주므로 라이브클래스에도 google로 기록됨
 - 자동 태그 추가(gclid)는 켜 둔 채로 유지
 
+## 바이럴 (자체 운영 블로그·SNS)
+링크는 `06_ads_tracking/utm.csv`의 `상시` 행 (설정: `tools/config.json` > `utm.viral`). 채널마다 고정 링크 1개, 글별 구분 없음.
+`utm_medium=social`이라 GA4 기본 채널에서 **Organic Social**로 묶임 (`viral` 같은 임의 값은 Unassigned로 빠지므로 바꾸지 말 것).
+- [ ] GA4 관리 > 맞춤 정의 > 맞춤 측정기준 만들기: 이름 `CTA 위치`, 범위 `이벤트`, 매개변수 `cta_location` (등록 이후 데이터부터 보임)
+- [ ] GA4 관리 > 이벤트 > `cta_click` 주요 이벤트로 표시 (위 설치 항목과 같음)
+- [ ] GA4 관리 > 데이터 스트림 > PetitRich Landing Web > 태그 설정 구성 > 내부 트래픽 정의: 팀 IP 등록 (`traffic_type=internal`)
+- [ ] GA4 관리 > 데이터 필터 > Internal Traffic 필터를 `테스트` → 확인 후 `활성`으로 변경 (활성화 이후 데이터에만 적용, 되돌릴 수 없음)
+- [ ] GA4 탐색 > 자유 형식 `바이럴 성과`: 측정기준 `세션 소스/매체`·`세션 캠페인`·`CTA 위치`, 측정항목 `활성 사용자`·`세션`·`이벤트 수`·`주요 이벤트`, 필터 `세션 캠페인 = organic_viral`. CTA만 볼 땐 `이벤트 이름 = cta_click` 필터 추가
+- [ ] 바이럴 링크 4개로 직접 접속 → GA4 실시간에서 소스(naver_blog 등) 확인 (내부 트래픽 필터 활성 전에 테스트)
+
 ## 검증 (광고 집행 전)
 - [ ] (11/4 테스트 클릭 시 googleadservices 전환 요청 200 확인. 애즈 화면 상태 변경은 수 시간 걸림) 구글 애즈 > 전환 액션 상태가 `기록 중` 또는 `최근 전환 없음`으로 바뀌는지 (GTM 게시 후 CTA 직접 클릭해 테스트)
 - [ ] Google 광고 URL로 접속 → CTA 링크 주소에 `utm_source=google` 들어가는지

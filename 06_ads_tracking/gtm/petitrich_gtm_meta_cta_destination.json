@@ -1,0 +1,104 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-11-05 12:00:00",
+  "containerVersion": {
+    "accountId": "6402311479",
+    "containerId": "285099722",
+    "containerVersionId": "0",
+    "container": {
+      "accountId": "6402311479",
+      "containerId": "285099722",
+      "name": "petitrich-landing.vercel.app",
+      "publicId": "GTM-PLPB9NFW",
+      "usageContext": ["WEB"]
+    },
+    "trigger": [
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "triggerId": "30",
+        "name": "CE - cta_click - 강의소개 이동",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "cta_click" }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "MATCH_REGEX",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{DLV - cta_url}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "/classes/274558/?([?#]|$)" }
+            ]
+          }
+        ]
+      },
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "triggerId": "31",
+        "name": "CE - cta_click - 강의실 이동",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "cta_click" }
+            ]
+          }
+        ],
+        "filter": [
+          {
+            "type": "CONTAINS",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{DLV - cta_url}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "/classes/274558/classroom/1191830" }
+            ]
+          }
+        ]
+      }
+    ],
+    "tag": [
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "tagId": "70",
+        "name": "Meta 픽셀 - CTA_ClassPage (강의소개 이동)",
+        "type": "html",
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "firingTriggerId": ["30"],
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nif (window.fbq) fbq('trackCustom', 'CTA_ClassPage', { cta_location: {{DLV - cta_location}} });\n</script>"
+          },
+          { "type": "BOOLEAN", "key": "supportDocumentWrite", "value": "false" }
+        ]
+      },
+      {
+        "accountId": "6402311479",
+        "containerId": "285099722",
+        "tagId": "71",
+        "name": "Meta 픽셀 - CTA_FreeClass (강의실 이동)",
+        "type": "html",
+        "tagFiringOption": "ONCE_PER_EVENT",
+        "firingTriggerId": ["31"],
+        "parameter": [
+          {
+            "type": "TEMPLATE",
+            "key": "html",
+            "value": "<script>\nif (window.fbq) fbq('trackCustom', 'CTA_FreeClass', { cta_location: {{DLV - cta_location}} });\n</script>"
+          },
+          { "type": "BOOLEAN", "key": "supportDocumentWrite", "value": "false" }
+        ]
+      }
+    ]
+  }
+}

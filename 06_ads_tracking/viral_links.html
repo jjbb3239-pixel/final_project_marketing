@@ -1,0 +1,81 @@
+<title>쁘띠리치 바이럴 링크</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* layout: single narrow column — rules up top, one row per channel with a copy button */
+:root{
+  --bg:#f7f8f6; --surface:#ffffff; --fg:#1d2420; --muted:#5d6862; --line:#dde3df; --accent:#1f7a55; --accent-ink:#ffffff; --warn:#a6461c;
+  --sans:"IBM Plex Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#131815; --surface:#1b211e; --fg:#e6ece8; --muted:#9aa69f; --line:#2c3530; --accent:#5fc596; --accent-ink:#0f1a14; --warn:#f0a07a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131815; --surface:#1b211e; --fg:#e6ece8; --muted:#9aa69f; --line:#2c3530; --accent:#5fc596; --accent-ink:#0f1a14; --warn:#f0a07a; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.65}
+.wrap{max-width:760px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:32px}
+h1{font-size:26px;line-height:1.3;margin:0;text-wrap:balance}
+h2{font-size:17px;margin:0 0 12px}
+.lede{color:var(--muted);margin:6px 0 0}
+.links{display:grid;gap:10px}
+.row{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.row b{font-size:15px}
+.src{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:6px}
+.url{grid-column:1/-1;font-family:var(--mono);font-size:12.5px;word-break:break-all;min-width:0;user-select:all;color:var(--fg)}
+button{font:600 13px var(--sans);background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:7px 12px;cursor:pointer;grid-row:1;grid-column:2}
+button:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.warn{color:var(--warn);font-weight:600}
+code{font-family:var(--mono);font-size:.9em}
+footer{color:var(--muted);font-size:13px}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>쁘띠리치 바이럴 링크</h1>
+    <p class="lede">블로그·SNS 글에 랜딩 링크를 넣을 때는 아래 채널별 링크를 그대로 복사해서 쓰세요. 어느 채널에서 몇 명이 들어와 강의 버튼을 눌렀는지 GA4에서 채널별로 집계됩니다.</p>
+  </header>
+
+  <section>
+    <h2>채널별 링크</h2>
+    <div class="links">
+      <div class="row"><b>네이버 블로그<span class="src">naver_blog</span></b><button type="button" data-copy="https://petitrich-landing.vercel.app/?utm_source=naver_blog&utm_medium=social&utm_campaign=organic_viral">복사</button><span class="url">https://petitrich-landing.vercel.app/?utm_source=naver_blog&amp;utm_medium=social&amp;utm_campaign=organic_viral</span></div>
+      <div class="row"><b>인스타그램<span class="src">instagram</span></b><button type="button" data-copy="https://petitrich-landing.vercel.app/?utm_source=instagram&utm_medium=social&utm_campaign=organic_viral">복사</button><span class="url">https://petitrich-landing.vercel.app/?utm_source=instagram&amp;utm_medium=social&amp;utm_campaign=organic_viral</span></div>
+      <div class="row"><b>스레드<span class="src">threads</span></b><button type="button" data-copy="https://petitrich-landing.vercel.app/?utm_source=threads&utm_medium=social&utm_campaign=organic_viral">복사</button><span class="url">https://petitrich-landing.vercel.app/?utm_source=threads&amp;utm_medium=social&amp;utm_campaign=organic_viral</span></div>
+      <div class="row"><b>티스토리<span class="src">tistory</span></b><button type="button" data-copy="https://petitrich-landing.vercel.app/?utm_source=tistory&utm_medium=social&utm_campaign=organic_viral">복사</button><span class="url">https://petitrich-landing.vercel.app/?utm_source=tistory&amp;utm_medium=social&amp;utm_campaign=organic_viral</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>쓰는 규칙</h2>
+    <ul>
+      <li>채널마다 링크는 하나입니다. 글이 달라도 같은 채널이면 같은 링크를 씁니다.</li>
+      <li><span class="warn">링크 뒷부분(<code>?utm_…</code>)을 지우거나 고치지 마세요.</span> 한 글자만 바뀌어도 다른 채널로 잡히거나 집계에서 빠집니다.</li>
+      <li>다른 채널의 링크를 섞어 쓰지 마세요. 예를 들어 티스토리 글에 네이버 블로그 링크를 넣으면 네이버 블로그 성과로 잡힙니다.</li>
+      <li>인스타그램은 프로필 링크와 스토리 링크 스티커 모두 위 인스타그램 링크를 씁니다.</li>
+      <li>bit.ly 같은 단축 링크를 쓰려면 위 전체 링크를 단축하세요. UTM이 빠진 기본 주소를 단축하면 안 됩니다.</li>
+      <li>링크 없이 "프로필 링크 확인" 같은 안내만 하는 글은 해당 채널 링크를 프로필에 걸어 두면 됩니다.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>제대로 걸렸는지 확인</h2>
+    <ul>
+      <li>글을 올린 뒤 글 속 링크를 한 번 눌러 보세요. 주소창에 <code>utm_source=채널이름</code>이 보이면 정상입니다.</li>
+      <li>랜딩에서 강의 버튼에 마우스를 올리거나 눌렀을 때 이동하는 라이브클래스 주소에도 같은 <code>utm_source</code>가 붙어 있으면 버튼 클릭까지 정상적으로 이어진 것입니다.</li>
+    </ul>
+  </section>
+
+  <footer>캠페인 이름: <code>organic_viral</code> · 매체: <code>social</code> · 원본 목록: 저장소 <code>06_ads_tracking/utm.csv</code>의 "상시" 행</footer>
+</div>
+
+<script>
+document.querySelectorAll('button[data-copy]').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=b.getAttribute('data-copy'), url=b.parentNode.querySelector('.url');
+    function done(){b.textContent='복사됨';setTimeout(function(){b.textContent='복사'},1500)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(url);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='선택됨 · Ctrl+C';setTimeout(function(){b.textContent='복사'},2500)}
+    try{navigator.clipboard.writeText(t).then(done,fallback)}catch(e){fallback()}
+  });
+});
+</script>

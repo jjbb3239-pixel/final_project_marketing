@@ -180,6 +180,13 @@ def build_utm_rows():
         rows.append({"차수": ad.get("round", ""), "채널": "Google", "소재": ad["content"], "소재유형": "검색광고", **params,
                      "광고 URL": utm_url(CFG["landing_url"], params),
                      "CTA Full URL": utm_url(CFG["cta_base"], params)})
+    # 바이럴(자체 운영 블로그·SNS): 채널마다 고정 링크 1개, 글별 구분 없음
+    v = u.get("viral")
+    for ch in (v or {}).get("channels", []):
+        params = {"utm_source": ch["utm_source"], "utm_medium": v["utm_medium"], "utm_campaign": v["campaign"]}
+        rows.append({"차수": "상시", "채널": ch["name"], "소재": "바이럴", "소재유형": "바이럴", **params,
+                     "광고 URL": utm_url(CFG["landing_url"], params),
+                     "CTA Full URL": utm_url(CFG["cta_base"], params)})
     return rows, skipped
 
 

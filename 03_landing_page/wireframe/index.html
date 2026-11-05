@@ -48,8 +48,7 @@
   <!-- ===== 추적 ID 설정: 여기 두 값만 실제 ID로 교체 ===== -->
   <script>
     window.TRACKING = {
-      GTM_ID: 'GTM-XXXXXXX',        // 예: GTM-AB12CD3
-      META_PIXEL_ID: 'XXXXXXXXXX', // 예: 123456789012345
+      GTM_ID: 'GTM-PLPB9NFW',       // 쁘띠리치 컨테이너 (2026-11-04 생성)
       CLARITY_ID: 'XXXXXXXXXX'          // Microsoft Clarity 프로젝트 ID (히트맵·세션 녹화, 무료)
     };
     window.dataLayer = window.dataLayer || [];
@@ -71,19 +70,7 @@
   </script>
   <!-- End Google Tag Manager -->
 
-  <!-- Meta Pixel (GTM에서는 픽셀 태그를 따로 만들지 말 것: 중복 집계됨) -->
-  <script>
-    (function(id){if(/X{3}/.test(id))return;
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-    document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', id);
-    fbq('track', 'PageView');
-    })(window.TRACKING.META_PIXEL_ID);
-  </script>
-  <!-- End Meta Pixel -->
+  <!-- Meta 픽셀은 GTM(GTM-PLPB9NFW)에서 로드: 'Meta 픽셀 - 기본 코드(PageView)', 'Meta 픽셀 - Lead (CTA 클릭)' 태그. 여기 다시 넣으면 중복 집계됨 -->
 
   <!-- Microsoft Clarity: 스크롤 깊이·클릭 히트맵. 광고 소재(utm_content)별로 나눠 볼 수 있게 태그를 붙임 -->
   <script>
@@ -1025,8 +1012,10 @@ html.fp-on #intro .intro-panel { min-height:calc(100svh - var(--head-h,65px) - v
       var T = window.TRACKING;
       var gtmOn = !/X{3}/.test(T.GTM_ID);
 
-      if (gtmOn) {
-        document.getElementById('gtm-noscript').src = 'https://www.googletagmanager.com/ns.html?id=' + T.GTM_ID;
+      // <noscript> 안의 iframe은 JS가 켜진 브라우저에선 DOM에 없음(null) → 없으면 건너뜀. 여기서 멈추면 아래 CTA 추적·UTM 전달이 모두 죽음
+      var gtmNs = document.getElementById('gtm-noscript');
+      if (gtmOn && gtmNs) {
+        gtmNs.src = 'https://www.googletagmanager.com/ns.html?id=' + T.GTM_ID;
       }
 
       // 광고에서 붙여 온 UTM을 CTA 링크(강의 페이지)에 그대로 넘김. 없으면 기본 UTM 유지
@@ -1046,12 +1035,11 @@ html.fp-on #intro .intro-panel { min-height:calc(100svh - var(--head-h,65px) - v
         });
       }
 
-      // CTA 클릭 → dataLayer(cta_click) + Meta Pixel(Lead)
+      // CTA 클릭 → dataLayer(cta_click). GTM이 받아서 GA4·구글 애즈·Meta 픽셀(Lead)로 전송
       document.querySelectorAll('.cta').forEach(function (el) {
         el.addEventListener('click', function () {
           var location = el.getAttribute('data-cta-location') || 'unknown';
           window.dataLayer.push({ event: 'cta_click', cta_location: location, cta_url: el.getAttribute('href') });
-          if (window.fbq) fbq('track', 'Lead', { content_name: 'cta_' + location });
         });
       });
 
