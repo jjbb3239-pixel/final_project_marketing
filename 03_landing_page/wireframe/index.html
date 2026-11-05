@@ -906,7 +906,8 @@ html.fp-on #instructor .change-panel.fp { padding-top:clamp(20px,3vh,56px); padd
 #instructor .res-v2 h2 { color:#111; font-size:clamp(28px,3.2vw,42px); line-height:1.3; }
 #instructor .res-v2 .lead { margin:16px auto 0; color:#111; font-size:clamp(16px,1.5vw,20px); }
 .res-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(16px,2vw,28px);
-  width:min(calc(100vw - 48px), 1280px, calc((100svh - 330px) * 3.4))!important; max-width:none!important; align-self:center; margin:clamp(28px,4.5vh,48px) auto 0; }
+  --rw:min(calc(100vw - 48px), 1280px, calc((100svh - 330px) * 3.4)); width:var(--rw)!important; max-width:none!important; align-self:flex-start;
+  margin:clamp(28px,4.5vh,48px) 0 0 calc(50% - var(--rw) / 2); }
 .res-item { margin:0; }
 .res-shot { position:relative; display:block; overflow:hidden; border:3px solid #111; border-radius:14px; background:#fff; box-shadow:0 10px 26px rgba(0,0,0,.12); transition:transform .25s, box-shadow .25s; }
 .res-shot img { display:block; width:100%; height:auto; aspect-ratio:1081/604; object-fit:contain; background:#fff; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
