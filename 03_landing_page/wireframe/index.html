@@ -900,6 +900,24 @@ html.fp-on #instructor .change-panel.fp { padding-top:clamp(20px,3vh,56px); padd
   .pc-bottom { flex-direction:column; align-items:stretch; }
   .pc-now p { justify-content:flex-start; } .pc-now { text-align:left; }
 }
+</style><style id="res-v2">
+/* 커뮤니티 화면: 큰 캡처 두 장 + 오른쪽 아래 주황 바로가기 */
+#instructor .res-v2 { text-align:center; align-items:center; }
+#instructor .res-v2 h2 { color:#111; font-size:clamp(28px,3.2vw,42px); line-height:1.3; }
+#instructor .res-v2 .lead { margin:16px auto 0; color:#111; font-size:clamp(16px,1.5vw,20px); }
+.res-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(16px,2vw,28px);
+  width:min(calc(100vw - 48px), 1280px, calc((100svh - 330px) * 3.4))!important; max-width:none!important; align-self:center; margin:clamp(28px,4.5vh,48px) auto 0; }
+.res-item { margin:0; }
+.res-shot { position:relative; display:block; overflow:hidden; border:3px solid #111; border-radius:14px; background:#fff; box-shadow:0 10px 26px rgba(0,0,0,.12); transition:transform .25s, box-shadow .25s; }
+.res-shot img { display:block; width:100%; height:auto; aspect-ratio:1081/604; object-fit:contain; background:#fff; transition:transform .5s cubic-bezier(.2,.7,.2,1); }
+.res-shot:hover { transform:translateY(-4px); box-shadow:0 18px 36px rgba(0,0,0,.18); }
+.res-shot:hover img { transform:scale(1.03); }
+.res-go { position:absolute; right:14px; bottom:14px; display:inline-flex; align-items:center; gap:6px; min-height:44px; padding:0 18px; background:#111; color:#fff; font-size:16px; font-weight:800; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,.25); transition:background-color .2s; }
+.res-go svg { width:16px; height:16px; }
+.res-shot:hover .res-go { background:#333; }
+.res-item figcaption { margin-top:14px; font-size:clamp(16px,1.4vw,19px); font-weight:700; color:#111; }
+@media (prefers-reduced-motion:reduce) { .res-shot, .res-shot img { transition:none; } .res-shot:hover, .res-shot:hover img { transform:none; } }
+@media (max-width:640px) { .res-grid { grid-template-columns:1fr; } .res-go { right:10px; bottom:10px; min-height:40px; padding:0 14px; font-size:15px; } }
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -1046,10 +1064,14 @@ html.fp-on #instructor .change-panel.fp { padding-top:clamp(20px,3vh,56px); padd
           <a class="change-cta cta" data-cta-location="change" href="/wireframe/blog/index.html?v=latest">장기 투자 팁 알아보기<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></a>
         </div>
 
-        <div class="wire-resources fp" data-fp="커뮤니티"><div class="wire-heading"><h2>강의 밖의 이야기도,<br>차근차근 살펴보세요.</h2><p class="lead">강사의 공개 콘텐츠를 함께 살펴볼 수 있도록<br>네이버 카페와 유튜브 소개 공간을 마련했습니다.</p></div><div class="wire-two">
-          <article class="resource-card"><figure class="media-space resource-space resource-photo" data-material="cafe"><img src="/wireframe/assets/cafe-jaerins-life.webp" width="1081" height="604" loading="lazy" decoding="async" alt="쁘띠리치 네이버 카페 「재린스 라이프」 메인 화면 · 일상이 재테크가 되는 곳"></figure><div><h3>함께 읽고, 생각하는 공간</h3><p>강사 네이버 카페의 소개 이미지와 공식 주소를 넣을 자리입니다.</p><a class="wire-text-link resource-link" href="https://cafe.naver.com/jaerinslife" target="_blank" rel="noopener">네이버 카페 바로가기 ↗</a></div></article>
-          <article class="resource-card"><figure class="media-space resource-space resource-photo" data-material="youtube"><img src="/wireframe/assets/youtube-petitrich.webp" width="1077" height="583" loading="lazy" decoding="async" alt="유튜브 채널 「쁘띠리치 운아, 일상이 재테크가 되는 곳」 메인 화면"></figure><div><h3>설명하는 모습을 더 보고 싶다면</h3><p>강사 유튜브의 대표 영상과 공식 주소를 넣을 자리입니다.</p><a class="wire-text-link resource-link" href="https://www.youtube.com/@%EC%81%98%EB%9D%A0%EB%A6%AC%EC%B9%98_%EC%9A%B4%EC%95%84" target="_blank" rel="noopener">유튜브 채널 바로가기 ↗</a></div></article>
-        </div></div>
+        <div class="wire-resources fp res-v2" data-fp="커뮤니티">
+          <h2>강의 밖의 이야기도<br>차근차근 살펴보세요</h2>
+          <p class="lead">먼저 배운 수강생들의 생생한 이야기를 살펴보세요</p>
+          <div class="res-grid">
+            <figure class="res-item"><a class="res-shot" href="https://cafe.naver.com/jaerinslife" target="_blank" rel="noopener" data-cta-location="cafe"><img src="/wireframe/assets/cafe-jaerins-life.webp" width="1081" height="604" loading="lazy" decoding="async" alt="쁘띠리치 네이버 카페 「재린스 라이프」 메인 화면 · 일상이 재테크가 되는 곳"><span class="res-go">바로가기<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></a><figcaption>네이버 카페</figcaption></figure>
+            <figure class="res-item"><a class="res-shot" href="https://www.youtube.com/@%EC%81%98%EB%9D%A0%EB%A6%AC%EC%B9%98_%EC%9A%B4%EC%95%84" target="_blank" rel="noopener" data-cta-location="youtube"><img src="/wireframe/assets/youtube-petitrich.webp" width="1077" height="583" loading="lazy" decoding="async" alt="유튜브 채널 「쁘띠리치 운아, 일상이 재테크가 되는 곳」 메인 화면"><span class="res-go">바로가기<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></span></a><figcaption>유튜브</figcaption></figure>
+          </div>
+        </div>
       </div>
     </section>
 
