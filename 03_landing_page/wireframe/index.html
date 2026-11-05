@@ -724,7 +724,7 @@ details summary::after { transition:transform .3s var(--ease-out); }
 /* 풀페이지: 한 화면 = 한 패널. 패널은 헤더·탭 아래 남은 높이를 채우고 내용은 세로 가운데 */
 html.fp-on main > section:not(#hero) { padding:0; border-bottom:0; }
 html.fp-on main [id]:not(#hero) { scroll-margin-top:calc(var(--head-h,65px) + var(--tabs-h,72px)); }
-html.fp-on #hero.hero-v2 { min-height:calc(100svh - var(--head-h,65px)); }
+html.fp-on #hero.hero-v2 { min-height:calc(100svh - var(--head-real,65px)); }
 html.fp-on :is(#cause,#instructor,#apply) .fp {
   min-height:calc(100svh - var(--head-h,65px) - var(--tabs-h,72px));
   display:flex; flex-direction:column; justify-content:center;
@@ -756,7 +756,7 @@ html.fp-on #apply .wire-risk { margin-top:24px; }
 /* 터치 기기: 스와이프하면 한 화면씩 붙어서 넘어감 (화면보다 긴 패널은 안에서 자유롭게 내려감) */
 html.fp-snap { scroll-snap-type:y mandatory; scroll-padding-top:calc(var(--head-h,65px) + var(--tabs-h,72px)); }
 html.fp-snap #hero, html.fp-snap main .fp, html.fp-snap footer { scroll-snap-align:start; scroll-snap-stop:always; }
-html.fp-snap #hero { scroll-margin-top:calc(-1 * var(--tabs-h,72px)); }
+html.fp-snap #hero { scroll-margin-top:calc(-1 * (var(--tabs-h,72px) + var(--head-real,65px))); }
 html.fp-snap #intro .fp { scroll-margin-top:calc(-1 * var(--tabs-h,72px)); }
 html.fp-snap .hero-facts-band { scroll-snap-align:end; }
 </style><style id="panels-v3">
@@ -843,6 +843,20 @@ html.fp-on #intro .intro-panel { min-height:calc(100svh - var(--head-h,65px) - v
   .toc-list .lt { grid-column:2; flex-direction:row; align-items:center; }
   #intro .hero-facts strong { font-size:18px; }
 }
+</style><style id="head-static">
+/* 헤더는 맨 위에만 (스크롤해도 따라오지 않음) */
+.site-head { position:relative; }
+/* 맨 위로 버튼: 히어로를 지나면 오른쪽 아래에 나타남 */
+.to-top { position:fixed; right:max(20px, env(safe-area-inset-right)); bottom:calc(20px + env(safe-area-inset-bottom)); z-index:40;
+  display:inline-flex; align-items:center; gap:6px; min-height:48px; padding:0 18px 0 14px; border:0; border-radius:999px;
+  background:#111; color:#fff; font:inherit; font-size:15px; font-weight:700; cursor:pointer;
+  box-shadow:0 0 0 1px rgba(255,255,255,.22), 0 10px 28px rgba(0,0,0,.35);
+  opacity:0; visibility:hidden; transform:translateY(12px); transition:opacity .3s, transform .3s, visibility .3s, background-color .2s; }
+.to-top svg { width:18px; height:18px; flex:none; }
+.to-top.show { opacity:1; visibility:visible; transform:none; }
+.to-top:hover { background:#FF6C28; color:#111; }
+.to-top:active { transform:scale(.96); }
+@media (prefers-reduced-motion:reduce) { .to-top { transition:none; } }
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -1286,9 +1300,9 @@ html.fp-on #intro .intro-panel { min-height:calc(100svh - var(--head-h,65px) - v
   var root=document.documentElement, head=document.querySelector('.site-head'), tabs=document.querySelector('.section-tabs');
   if(!tabs) return;
   var links=[].slice.call(tabs.querySelectorAll('a')), secs=links.map(function(a){return document.getElementById(a.dataset.tab);});
-  var size=function(){ root.style.setProperty('--head-h',(head?head.offsetHeight:0)+'px'); root.style.setProperty('--tabs-h',tabs.offsetHeight+'px'); };
+  var size=function(){ root.style.setProperty('--head-h','0px'); root.style.setProperty('--head-real',(head?head.offsetHeight:0)+'px'); root.style.setProperty('--tabs-h',tabs.offsetHeight+'px'); };
   var lock=0, set=function(id){ links.forEach(function(a){ var on=a.dataset.tab===id; a.classList.toggle('on',on); if(on) a.setAttribute('aria-current','true'); else a.removeAttribute('aria-current'); }); };
-  var spy=function(){ if(Date.now()<lock) return; var line=(head?head.offsetHeight:0)+tabs.offsetHeight+40, cur='';
+  var spy=function(){ if(Date.now()<lock) return; var line=tabs.offsetHeight+40, cur='';
     secs.forEach(function(sec){ if(sec && sec.getBoundingClientRect().top<=line) cur=sec.id; }); set(cur); };
   links.forEach(function(a){ a.addEventListener('click',function(e){ var t=document.getElementById(a.dataset.tab); if(!t) return; e.preventDefault();
     set(a.dataset.tab); lock=Date.now()+900;
@@ -1364,8 +1378,8 @@ html.fp-on #intro .intro-panel { min-height:calc(100svh - var(--head-h,65px) - v
   var mode=function(){ root.classList.toggle('fp-snap',!desk.matches); };
   mode(); desk.addEventListener&&desk.addEventListener('change',mode);
 
-  var stick=function(){ return (head?head.offsetHeight:0)+(tabs?tabs.offsetHeight:0); };
-  var off=function(el){ var h=head?head.offsetHeight:0; return (tabs && (el.compareDocumentPosition(tabs) & 4)) ? h : stick(); };
+  var stick=function(){ return tabs?tabs.offsetHeight:0; };
+  var off=function(el){ var h=0; return (tabs && (el.compareDocumentPosition(tabs) & 4)) ? h : stick(); };
   var maxY=function(){ return root.scrollHeight-innerHeight; };
   var stops=function(){
     var m=maxY(), a=panels.map(function(el,i){ return i? Math.min(m,Math.max(0,Math.round(el.getBoundingClientRect().top+scrollY-off(el)))) : 0; });
@@ -1443,6 +1457,22 @@ html.fp-on #intro .intro-panel { min-height:calc(100svh - var(--head-h,65px) - v
     more.forEach(function(li,k){ li.hidden=!open; li.classList.toggle('in',open); li.style.animationDelay=open?(k*60)+'ms':''; });
     btn.setAttribute('aria-expanded',open?'true':'false');
     btn.firstChild.textContent=open?'접기':'더보기'; btn.lastChild.textContent=open?'−':'+';
+  });
+})();
+</script>
+<script>
+/* 맨 위로 버튼 */
+(function(){
+  var hero=document.getElementById('hero');
+  var b=document.createElement('button'); b.type='button'; b.className='to-top'; b.setAttribute('aria-label','맨 위로 이동');
+  b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>맨 위로';
+  b.tabIndex=-1; document.body.appendChild(b);
+  var upd=function(){ var on=scrollY > (hero?hero.offsetHeight*0.6:400); b.classList.toggle('show',on); b.tabIndex=on?0:-1; b.setAttribute('aria-hidden',on?'false':'true'); };
+  addEventListener('scroll',upd,{passive:true}); upd();
+  b.addEventListener('click',function(){
+    var calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    scrollTo({top:0,behavior:calm?'auto':'smooth'});
+    var t=document.querySelector('.site-head a, a'); if(t) setTimeout(function(){ t.focus({preventScroll:true}); },calm?0:700);
   });
 })();
 </script>
