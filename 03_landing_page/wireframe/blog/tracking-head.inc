@@ -1,4 +1,4 @@
-<!-- Blog analytics: keep the team's existing Meta and Ads tags inactive on these pages. -->
+<!-- Blog analytics: block GTM custom HTML, Ads conversion and conversion linker tags on these pages. -->
 <script>
 window.TRACKING = { GTM_ID: 'GTM-PLPB9NFW' };
 window.dataLayer = window.dataLayer || [];

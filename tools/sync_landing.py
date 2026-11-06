@@ -282,7 +282,7 @@ def cmd_build(argv):
     blog_dir = out / "wireframe" / "blog"
     if blog_dir.is_dir():
         bootstrap = (blog_dir / "tracking-head.inc").read_text(encoding="utf-8")
-        marker = "<!-- Blog analytics: keep the team's existing Meta and Ads tags inactive on these pages. -->"
+        marker = "<!-- Blog analytics: block GTM custom HTML, Ads conversion and conversion linker tags on these pages. -->"
         for article in blog_dir.rglob("*.html"):
             content = article.read_text(encoding="utf-8")
             if marker in content:
