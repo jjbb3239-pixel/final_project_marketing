@@ -279,9 +279,29 @@ def cmd_build(argv):
     # Publish the merged landing at the production homepage as well as /wireframe/.
     shutil.copy2(out / "wireframe" / "index.html", out / "index.html")
     (out / "qa-preview.html").write_text(qa_version(qa_page), encoding="utf-8")
+    blog_dir = out / "wireframe" / "blog"
+    if blog_dir.is_dir():
+        bootstrap = (blog_dir / "tracking-head.inc").read_text(encoding="utf-8")
+        marker = "<!-- Blog analytics: keep the team's existing Meta and Ads tags inactive on these pages. -->"
+        for article in blog_dir.rglob("*.html"):
+            content = article.read_text(encoding="utf-8")
+            if marker in content:
+                if (content.count(marker) != 1 or content.count('/wireframe/blog/tracking.js') != 1
+                        or "'gtm.blocklist': ['html', 'awct', 'gclidw']" not in content
+                        or content.find(marker) > content.find('</head>')):
+                    raise ValueError(f"Invalid blog tracking setup: {article.name}")
+                continue
+            if ('googletagmanager.com/gtm.js' in content or 'googletagmanager.com/gtag/js' in content
+                    or '/wireframe/blog/tracking.js' in content or content.count('</head>') != 1):
+                raise ValueError(f"Check existing blog tracking or head element: {article.name}")
+            article.write_text(content.replace('</head>', bootstrap + '\n</head>', 1), encoding="utf-8")
+    blog_urls = [f'{CFG["landing_url"].rstrip("/")}/wireframe/blog/{p.relative_to(blog_dir).as_posix()}'
+                 for p in sorted(blog_dir.rglob("*.html"))] if blog_dir.is_dir() else []
+    sitemap_entries = [f'  <url><loc>{html.escape(CFG["landing_url"])}</loc><lastmod>{TODAY}</lastmod></url>']
+    sitemap_entries += [f'  <url><loc>{html.escape(url)}</loc></url>' for url in blog_urls]
     (out / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        f'  <url><loc>{CFG["landing_url"]}</loc><lastmod>{TODAY}</lastmod></url>\n</urlset>\n', encoding="utf-8")
+        + '\n'.join(sitemap_entries) + '\n</urlset>\n', encoding="utf-8")
     print(f"[빌드] 완료: {out.relative_to(ROOT)}/ (index.html, qa-preview.html, sitemap.xml + 정적 파일)")
 
 
