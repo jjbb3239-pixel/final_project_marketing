@@ -34,3 +34,7 @@ html{scroll-padding-top:24px}
 
 /* 글 표지: 원본 비율 유지 */
 .article-cover img{height:auto;aspect-ratio:1600/914;display:block}
+.article-figure{margin:34px 0 38px}
+.article-figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;border-radius:18px;border:1px solid var(--line);background:var(--panel)}
+.article-figure figcaption{margin-top:12px;font-size:15px;line-height:1.6;color:var(--muted)}
+@media(max-width:600px){.article-figure{margin:26px 0 30px}.article-figure img{border-radius:14px}.article-figure figcaption{font-size:14px}}
