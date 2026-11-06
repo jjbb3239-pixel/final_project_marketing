@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" data-layout-version="landing-20261106-v2">
+<html lang="ko" data-layout-version="landing-20261106-v3">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,12 +16,14 @@
   <meta property="og:url" content="https://petitrich-landing.vercel.app/">
   <meta property="og:title" content="온 가족 1억 만드는 미국 성장주 투자 입문 | 쁘띠리치">
   <meta property="og:description" content="남들보다 늦었다는 조급함 대신, 미국 성장주 투자를 처음부터 차분하게.">
-  <!-- 공유 이미지 준비되면 주석 해제 (1200x630, assets/og.jpg)
-  <meta property="og:image" content="https://petitrich-landing.vercel.app/assets/og.jpg">
+  <!-- 바이럴 공유(스레드·네이버 블로그 등) 미리보기 이미지: 1200x630, assets/og-viral.jpg -->
+  <meta property="og:image" content="https://petitrich-landing.vercel.app/assets/og-viral.jpg">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  -->
+  <meta property="og:image:alt" content="미국 성장주 따라 사긴 불안하고 지켜만 보긴 아쉽다면.">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://petitrich-landing.vercel.app/assets/og-viral.jpg">
 
   <!-- 구조화 데이터: 강의 정보 (페이지에 보이는 사실과 일치해야 함) -->
   <script type="application/ld+json">
@@ -1178,11 +1180,12 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
         } catch (e) { /* 잘못된 주소는 별도 분류한다. */ }
         return 'other';
       };
-      // 기존 CTA 클릭 이벤트는 유지하고 GA4 분석에 필요한 분류 정보만 더한다.
+      // 블로그 이동은 별도로 기록하고 강의 CTA의 기존 이벤트는 유지한다.
       document.querySelectorAll('.cta').forEach(function (el) {
         el.addEventListener('click', function () {
           var location = el.getAttribute('data-cta-location') || 'unknown';
-          window.dataLayer.push({ event: 'cta_click', cta_location: location, cta_url: el.getAttribute('href'), cta_id: 'landing_' + location, destination_type: destinationType(el), page_type: 'landing', layout_version: layoutVersion });
+          var destination = destinationType(el);
+          window.dataLayer.push({ event: destination === 'blog' ? 'landing_blog_click' : 'cta_click', cta_location: location, cta_url: el.getAttribute('href'), cta_id: 'landing_' + location, destination_type: destination, page_type: 'landing', layout_version: layoutVersion });
         });
       });
 
