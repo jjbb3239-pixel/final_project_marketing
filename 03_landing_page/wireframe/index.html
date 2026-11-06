@@ -1024,7 +1024,7 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
 </style><style id="hero-sunrise">
 /* 히어로 (일출 배경 시안): 레퍼런스 1717×916 화면 기준 크기를 화면 폭·높이에 맞춰 비례 조정. 글씨체·두께는 기존과 동일 */
 #hero.hero-v2 { --u:min(1vw, 1.875vh); background-color:#0a0502; }
-@media (min-width:861px) { #hero.hero-v2 { padding:calc(var(--u)*7) 0 0; } }
+@media (min-width:861px) { #hero.hero-v2 { padding:calc(var(--u)*4) 0 0; } }
 #hero.hero-v2 .hv-l1 { font-size:clamp(48px, calc(var(--u)*7.69), 170px); margin-bottom:clamp(8px, calc(var(--u)*1.16), 26px);
   background:none; -webkit-background-clip:border-box; background-clip:border-box; color:#fff; animation:none; filter:drop-shadow(0 4px 18px rgba(0,0,0,.18)); }
 #hero.hero-v2 .hv-l2, #hero.hero-v2 .hv-l3 { font-size:clamp(26px, calc(var(--u)*3.84), 86px); }
@@ -1034,6 +1034,15 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
 #hero.hero-v2 .hero-cta:hover { background:#1f1f1f; box-shadow:0 14px 34px rgba(0,0,0,.35); }
 #hero.hero-v2 .hero-cta .hv-arrow { width:1.1em; height:1.1em; }
 #hero.hero-v2 .hero-cta .hv-arrow path { stroke-width:2; stroke-linecap:round; }
+/* 평점 배지: 제목 위, 처음에 부드럽게 나타남 */
+.hv-badge { display:flex; width:fit-content; align-items:center; gap:.6em; margin:0 auto clamp(16px, calc(var(--u)*2.4), 48px); padding:.55em 1.15em;
+  border-radius:999px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.22); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  color:#fff3ea; font-size:clamp(13px, calc(var(--u)*1.05), 22px); font-weight:600; letter-spacing:-0.01em; line-height:1.2;
+  animation:hv-badge-in .7s .15s cubic-bezier(.2,.75,.2,1) both; }
+.hv-stars { color:#FFC35A; letter-spacing:.12em; }
+@keyframes hv-badge-in { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce) { .hv-badge { animation:none; } }
+@media (max-width:600px) { .hv-badge { margin-bottom:18px; } }
 .hero-line { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
 @media (max-width:600px) {
   #hero.hero-v2 .hv-l1 { font-size:13.5vw; } #hero.hero-v2 .hv-l2, #hero.hero-v2 .hv-l3 { font-size:7vw; }
@@ -1067,6 +1076,7 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
         </g>
       </svg>
       <div class="wrap hero-v2-inner">
+        <p class="hv-badge"><span class="hv-stars" aria-hidden="true">★★★★★</span>공식 수강 후기 평균 5.0점</p>
         <h1 id="hero-title" data-slot="hero.title"><span class="hv-l1">미국 성장주<img class="hv-spark" src="/assets/design-reference/hero_star.png" width="54" height="82" alt="" aria-hidden="true"></span><span class="hv-l2">따라 사긴 불안하고</span><span class="hv-l3">지켜만 보긴 아쉽다면.</span></h1>
         <a class="pill hero-cta cta" data-cta-location="hero" href="https://fireclub.liveklass.com/classes/274558/classroom/1191830/?preview=true" target="_blank" rel="noopener"><span data-slot="hero.cta">1강 무료 보고 기본부터 시작하기</span><svg class="hv-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18 L18 6 M8 6 H18 V16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/></svg></a>
       </div>
