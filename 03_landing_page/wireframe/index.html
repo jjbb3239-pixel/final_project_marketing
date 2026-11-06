@@ -881,6 +881,58 @@ html.fp-on #instructor .change-panel.fp { padding-top:clamp(20px,3vh,56px); padd
 .change-cta { display:inline-flex; align-items:center; justify-content:center; gap:8px; width:min(100%,520px)!important; min-height:52px; margin-top:clamp(22px,3.6vh,36px); padding:14px 24px; background:#FF854C; color:#111; font-size:17px; font-weight:700; text-decoration:none; transition:background-color .2s; }
 .change-cta:hover { background:#ff9563; }
 .change-cta svg { width:18px; height:18px; flex:none; }
+/* 변화 카드 상단 그림 (ETF vs 개별종목 / PER 공식 / 10년 계획). 휴대폰에서는 간단한 모양으로 바뀜 */
+#instructor .change-panel .change-cards article { padding:0; overflow:hidden; display:flex; flex-direction:column; }
+#instructor .change-panel .change-cards .cc-body { padding:20px 22px 24px; }
+#instructor .change-panel .change-cards .cc-body > span { font-size:14px; font-weight:800; color:#FF6C28; }
+.cc-art { position:relative; display:flex; align-items:center; justify-content:center; height:150px; padding:0 16px;
+  background:radial-gradient(120% 95% at 85% 0%, rgba(120,50,18,.85), rgba(38,38,40,0) 70%), #262628; border-bottom:1px solid rgba(255,255,255,.07); }
+.cc-box { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; background:#33241c; border:1.5px solid rgba(255,133,76,.55); border-radius:12px; }
+.cc-box b { font-size:13px; font-weight:700; color:#FFC9A8; line-height:1; }
+.cc-vs { display:flex; align-items:center; justify-content:center; gap:10px; }
+.cc-vs .cc-box { width:80px; height:70px; }
+.cc-vs > em { font-style:normal; font-size:15px; font-weight:800; color:#7c7c82; }
+.cc-dots { display:flex; gap:5px; }
+.cc-dots i { width:14px; height:14px; border-radius:50%; background:#FF854C; }
+.cc-dots i:nth-child(2) { background:#FFB07C; } .cc-dots i:nth-child(3) { background:#FFD8BD; }
+.cc-dots.one i { width:20px; height:20px; }
+.cc-short { display:none; }
+.cc-per { flex-direction:row; gap:16px; padding:16px 26px; }
+.cc-per strong { font-size:22px; font-weight:800; color:#fff; line-height:1; }
+.cc-per > em { font-style:normal; font-size:18px; color:#8a8a90; }
+.cc-frac { display:flex; flex-direction:column; align-items:center; gap:6px; }
+.cc-frac b { font-size:14px; padding:0 8px; }
+.cc-frac b:first-child { padding-bottom:6px; border-bottom:2px solid #FF854C; }
+.cc-time { position:relative; width:200px; padding-top:34px; }
+.cc-curve { position:absolute; left:0; top:0; width:100%; height:40px; overflow:visible; }
+.cc-tag { position:absolute; right:-14px; top:-6px; padding:3px 10px; border-radius:999px; background:#FF6C28; color:#111; font-size:11px; font-weight:800; }
+.cc-time ol { position:relative; display:flex; justify-content:space-between; margin:0; padding:0; list-style:none; }
+.cc-time ol::before { content:""; position:absolute; left:6px; right:8px; top:6px; height:2px; background:#55555a; }
+.cc-time li { position:relative; display:flex; flex-direction:column; align-items:center; gap:10px; font-size:12px; color:#bbb; }
+.cc-time li::before { content:""; width:12px; height:12px; border-radius:50%; background:#FF854C; }
+.cc-time li:nth-child(2)::before { width:10px; height:10px; margin:1px 0; background:#FFB07C; }
+.cc-time li:last-child { color:#fff; font-weight:700; }
+.cc-time li:last-child::before { width:16px; height:16px; margin-top:-2px; background:#FFD8BD; }
+/* 휴대폰(카드 1단): 그림은 왼쪽, 내용은 오른쪽 — 이름 줄이고 공식은 세로로, 빛은 왼쪽 위에서 */
+@media (max-width:760px) {
+  #instructor .change-panel .change-cards article { flex-direction:row; align-items:stretch; }
+  #instructor .change-panel .change-cards .cc-body { flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center; padding:18px 18px 18px 16px; }
+  #instructor .change-panel .change-cards article h3 { font-size:16px; }
+  #instructor .change-panel .change-cards article p { font-size:13.5px; }
+  .cc-art { flex:none; width:132px; height:auto; min-height:140px; padding:0 10px; border-bottom:0; border-right:1px solid rgba(255,255,255,.07);
+    background:radial-gradient(130% 80% at 0% 0%, rgba(120,50,18,.85), rgba(38,38,40,0) 70%), #262628; }
+  .cc-full { display:none; } .cc-short { display:inline; }
+  .cc-vs { gap:8px; } .cc-vs > em { display:none; }
+  .cc-vs .cc-box { width:48px; height:68px; gap:8px; } .cc-box b { font-size:12px; }
+  .cc-dots { gap:0; } .cc-dots i { width:11px; height:11px; } .cc-dots.one i { width:17px; height:17px; }
+  .cc-per { flex-direction:column; gap:5px; padding:12px 16px; } .cc-per > em { display:none; } .cc-per strong { font-size:18px; }
+  .cc-frac { gap:4px; } .cc-frac b { font-size:12px; padding:0 6px; } .cc-frac b:first-child { padding-bottom:4px; }
+  .cc-time { width:104px; padding-top:30px; } .cc-curve { height:36px; }
+  .cc-tag { right:-8px; top:-8px; font-size:10px; padding:2px 7px; }
+  .cc-time li { font-size:10.5px; gap:7px; } .cc-time li::before { width:9px; height:9px; }
+  .cc-time li:nth-child(2)::before { width:8px; height:8px; margin:.5px 0; } .cc-time li:last-child::before { width:12px; height:12px; margin-top:-1.5px; }
+  .cc-time ol::before { top:4px; left:4px; right:6px; }
+}
 /* FAQ: 가격 박스를 뺐으니 한 칸 가운데 */
 #apply .wire-faq-layout { grid-template-columns:1fr; max-width:820px; }
 @media (max-width:760px) {
@@ -1093,9 +1145,32 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
           <span class="change-arrow" aria-hidden="true"></span>
           <h2 class="change-a">당장 눈 앞의 이익보다는<br><span class="hl">10년 후 나의 미래</span>를 위해</h2>
           <div class="change-cards">
-            <article><span>01</span><h3>투자 방식을 비교하기</h3><p>ETF와 개별종목의 차이를 알고, 어떤 점을 더 공부해야 할지 정리합니다.</p></article>
-            <article><span>02</span><h3>기업을 보는 용어 익히기</h3><p>PER와 EPS의 뜻을 이해하고, 기업의 이익과 주가를 살펴볼 기초를 쌓습니다.</p></article>
-            <article><span>03</span><h3>내 투자 계획 생각하기</h3><p>포트폴리오와 환율·세금을 함께 살피며, 내가 이해한 것과 더 알아볼 것을 구분합니다.</p></article>
+            <article>
+              <div class="cc-art" aria-hidden="true">
+                <div class="cc-vs">
+                  <div class="cc-box"><b>ETF</b><span class="cc-dots"><i></i><i></i><i></i></span></div>
+                  <em>VS</em>
+                  <div class="cc-box"><b><span class="cc-full">개별종목</span><span class="cc-short">개별</span></b><span class="cc-dots one"><i></i></span></div>
+                </div>
+              </div>
+              <div class="cc-body"><span>01</span><h3>투자 방식을 비교하기</h3><p>ETF와 개별종목의 차이를 알고, 어떤 점을 더 공부해야 할지 정리합니다.</p></div>
+            </article>
+            <article>
+              <div class="cc-art" aria-hidden="true">
+                <div class="cc-box cc-per"><strong>PER</strong><em>=</em><span class="cc-frac"><b>주가</b><b>EPS</b></span></div>
+              </div>
+              <div class="cc-body"><span>02</span><h3>기업을 보는 용어 익히기</h3><p>PER와 EPS의 뜻을 이해하고, 기업의 이익과 주가를 살펴볼 기초를 쌓습니다.</p></div>
+            </article>
+            <article>
+              <div class="cc-art" aria-hidden="true">
+                <div class="cc-time">
+                  <svg viewBox="0 0 200 40" preserveAspectRatio="none" class="cc-curve"><path d="M6 40 Q110 34 178 10" fill="none" stroke="#FF854C" stroke-width="2.5" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"/></svg>
+                  <span class="cc-tag">내 계획</span>
+                  <ol><li>오늘</li><li>5년</li><li>10년</li></ol>
+                </div>
+              </div>
+              <div class="cc-body"><span>03</span><h3>내 투자 계획 생각하기</h3><p>포트폴리오와 환율·세금을 함께 살피며, 내가 이해한 것과 더 알아볼 것을 구분합니다.</p></div>
+            </article>
           </div>
           <a class="change-cta cta" data-cta-location="change" href="/wireframe/blog/index.html?v=latest">장기 투자 팁 알아보기<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"/></svg></a>
         </div>
