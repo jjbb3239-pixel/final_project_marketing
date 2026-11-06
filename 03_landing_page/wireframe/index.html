@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" data-layout-version="landing-20261106-v2">
+<html lang="ko" data-layout-version="landing-20261106-v3">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1178,11 +1178,12 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
         } catch (e) { /* 잘못된 주소는 별도 분류한다. */ }
         return 'other';
       };
-      // 기존 CTA 클릭 이벤트는 유지하고 GA4 분석에 필요한 분류 정보만 더한다.
+      // 블로그 이동은 별도로 기록하고 강의 CTA의 기존 이벤트는 유지한다.
       document.querySelectorAll('.cta').forEach(function (el) {
         el.addEventListener('click', function () {
           var location = el.getAttribute('data-cta-location') || 'unknown';
-          window.dataLayer.push({ event: 'cta_click', cta_location: location, cta_url: el.getAttribute('href'), cta_id: 'landing_' + location, destination_type: destinationType(el), page_type: 'landing', layout_version: layoutVersion });
+          var destination = destinationType(el);
+          window.dataLayer.push({ event: destination === 'blog' ? 'landing_blog_click' : 'cta_click', cta_location: location, cta_url: el.getAttribute('href'), cta_id: 'landing_' + location, destination_type: destination, page_type: 'landing', layout_version: layoutVersion });
         });
       });
 
