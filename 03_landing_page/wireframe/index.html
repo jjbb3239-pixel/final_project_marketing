@@ -495,12 +495,12 @@ body, button, input, textarea, select, [data-editor-ui] { font-family:'Project P
   position:relative; overflow:hidden; isolation:isolate; display:flex; align-items:center;
   min-height:calc(100svh - 65px); padding:clamp(72px,9vw,150px) 0 clamp(48px,3vw,56px);
     background-color:#120906;
-  background-image:url("/wireframe/assets/hero-background.webp");
+  background-image:url("/wireframe/assets/hero-background-sunrise.webp");
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
 }
-@media (max-width:860px) { #hero.hero-v2 { background-position:78% center; } }
+@media (max-width:860px) { #hero.hero-v2 { background-position:center bottom; } }
 .hero-graph { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center bottom; z-index:-1; pointer-events:none; }
 .hero-v2-inner { text-align:center; }
 .hero-v2 h1 { margin:0; font-weight:800; letter-spacing:-0.025em; line-height:1.2; }
@@ -1021,6 +1021,24 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
 </style><style id="lecture-video">
 /* 노트북 화면: 강의 장면 영상(원본 GIF를 웹용 mp4/webm으로 변환, 소리 없이 반복) */
 .laptop-view .lv-video { display:block; width:100%; height:100%; object-fit:cover; background:#000; }
+</style><style id="hero-sunrise">
+/* 히어로 (일출 배경 시안): 레퍼런스 1717×916 화면 기준 크기를 화면 폭·높이에 맞춰 비례 조정. 글씨체·두께는 기존과 동일 */
+#hero.hero-v2 { --u:min(1vw, 1.875vh); background-color:#0a0502; }
+@media (min-width:861px) { #hero.hero-v2 { padding:calc(var(--u)*7) 0 0; } }
+#hero.hero-v2 .hv-l1 { font-size:clamp(48px, calc(var(--u)*7.69), 170px); margin-bottom:clamp(8px, calc(var(--u)*1.16), 26px);
+  background:none; -webkit-background-clip:border-box; background-clip:border-box; color:#fff; animation:none; filter:drop-shadow(0 4px 18px rgba(0,0,0,.18)); }
+#hero.hero-v2 .hv-l2, #hero.hero-v2 .hv-l3 { font-size:clamp(26px, calc(var(--u)*3.84), 86px); }
+#hero.hero-v2 .hv-l2 { margin-bottom:clamp(2px, calc(var(--u)*.23), 6px); }
+#hero.hero-v2 .hero-cta { width:clamp(280px, calc(var(--u)*36.6), 820px); height:clamp(56px, calc(var(--u)*5.42), 120px); min-height:0; padding:0 24px;
+  margin:clamp(24px, calc(var(--u)*2.5), 56px) auto 0; background:#000; color:#fff; font-size:clamp(16px, calc(var(--u)*1.89), 42px); letter-spacing:.03em; box-shadow:none; }
+#hero.hero-v2 .hero-cta:hover { background:#1f1f1f; box-shadow:0 14px 34px rgba(0,0,0,.35); }
+#hero.hero-v2 .hero-cta .hv-arrow { width:1.1em; height:1.1em; }
+#hero.hero-v2 .hero-cta .hv-arrow path { stroke-width:2; stroke-linecap:round; }
+.hero-line { position:absolute; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
+@media (max-width:600px) {
+  #hero.hero-v2 .hv-l1 { font-size:13.5vw; } #hero.hero-v2 .hv-l2, #hero.hero-v2 .hv-l3 { font-size:7vw; }
+  #hero.hero-v2 .hero-cta { width:100%; height:60px; font-size:clamp(15px,4.3vw,18px); letter-spacing:.01em; margin-top:28px; }
+}
 </style></head>
 <body><svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none"><defs><filter id="logo-remove-white" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 0 3"/></filter></defs></svg>
   <noscript><iframe id="gtm-noscript" src="" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -1035,7 +1053,19 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
 
   <main>
     <section id="hero" class="hero hero-v2" data-section="1_hero" data-track-section="hero" aria-labelledby="hero-title">
-      <img class="hero-graph" src="/assets/design-reference/hero_background.svg" width="1947" height="915" alt="" aria-hidden="true">
+      <svg class="hero-graph hero-line" viewBox="0 0 1717 916" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="hl-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".12"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+          <radialGradient id="hl-glow"><stop offset="0" stop-color="#fff2e0" stop-opacity=".75"/><stop offset="1" stop-color="#fff2e0" stop-opacity="0"/></radialGradient>
+        </defs>
+        <path d="M0 840 L310 720 L480 770 L860 555 L1050 615 L1370 305 L1480 350 L1717 110 L1717 916 L0 916Z" fill="url(#hl-fill)" opacity="0"><animate attributeName="opacity" from="0" to="1" begin="1.7s" dur=".8s" fill="freeze"/></path>
+        <path id="hl-path" d="M0 840 L310 720 L480 770 L860 555 L1050 615 L1370 305 L1480 350 L1717 110" pathLength="1" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="2.4" stroke-linejoin="round" stroke-dasharray="1" stroke-dashoffset="1"><animate attributeName="stroke-dashoffset" from="1" to="0" begin=".2s" dur="2.2s" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".45 0 .55 1"/></path>
+        <g opacity="0"><set attributeName="opacity" to="1" begin=".2s" fill="freeze"/>
+          <circle r="54" fill="url(#hl-glow)"><animate attributeName="r" values="40;68;40" dur="3s" repeatCount="indefinite"/></circle>
+          <circle r="8" fill="#fff6ec"/>
+          <animateMotion begin=".2s" dur="2.2s" fill="freeze" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines=".45 0 .55 1"><mpath href="#hl-path"/></animateMotion>
+        </g>
+      </svg>
       <div class="wrap hero-v2-inner">
         <h1 id="hero-title" data-slot="hero.title"><span class="hv-l1">미국 성장주<img class="hv-spark" src="/assets/design-reference/hero_star.png" width="54" height="82" alt="" aria-hidden="true"></span><span class="hv-l2">따라 사긴 불안하고</span><span class="hv-l3">지켜만 보긴 아쉽다면.</span></h1>
         <a class="pill hero-cta cta" data-cta-location="hero" href="https://fireclub.liveklass.com/classes/274558/classroom/1191830/?preview=true" target="_blank" rel="noopener"><span data-slot="hero.cta">1강 무료 보고 기본부터 시작하기</span><svg class="hv-arrow" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 18 L18 6 M8 6 H18 V16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="square"/></svg></a>
@@ -1670,6 +1700,11 @@ html.fp-on #instructor .toc-panel.fp { padding-top:clamp(16px,3.4vh,64px); paddi
   if(matchMedia('(prefers-reduced-motion: reduce)').matches){ v.removeAttribute('autoplay'); v.pause(); }
   else { var p=v.play&&v.play(); if(p&&p.catch) p.catch(function(){}); }
 })();
+</script>
+<script>
+/* 움직임 줄이기 설정이면 히어로 그래프를 처음부터 완성된 모양으로 */
+(function(){ var g=document.querySelector('.hero-line'); if(!g||!g.pauseAnimations) return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ g.pauseAnimations(); g.setCurrentTime(5); } })();
 </script>
 </body>
 </html>
