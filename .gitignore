@@ -6,3 +6,4 @@ node_modules/
 __pycache__/
 *.pyc
 03_landing_page/dist/
+_incoming/
