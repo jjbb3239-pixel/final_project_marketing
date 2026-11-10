@@ -19,10 +19,23 @@
       var url = new URL(a.getAttribute('href'), location.href);
       if (url.hostname === 'fireclub.liveklass.com' && /^\/classes\/274558\/classroom\/1191830\/?$/.test(url.pathname)) return 'free_lesson';
       if (url.hostname === 'fireclub.liveklass.com' && /^\/classes\/274558\/?$/.test(url.pathname)) return 'product_detail';
-      if (url.origin === location.origin && /^\/wireframe\/(?:index\.html)?$/.test(url.pathname)) return 'landing';
+      if (url.origin === location.origin && /^\/(?:index\.html|wireframe\/(?:index\.html)?)?$/.test(url.pathname)) return 'landing';
     } catch (e) { return null; }
     return null;
   }
+
+  // 0) 강의 사이트로 가는 링크에 기본 UTM을 붙여 블로그 유입임을 구분한다 (이미 UTM이 있으면 그대로 둔다).
+  document.querySelectorAll('a[href]').forEach(function (a) {
+    try {
+      var url = new URL(a.getAttribute('href'), location.href);
+      if (url.hostname !== 'fireclub.liveklass.com' || url.searchParams.get('utm_source')) return;
+      url.searchParams.set('utm_source', 'petitrich_blog');
+      url.searchParams.set('utm_medium', 'referral');
+      url.searchParams.set('utm_campaign', 'finalproject');
+      url.searchParams.set('utm_content', 'blog_' + articleId);
+      a.setAttribute('href', url.toString());
+    } catch (e) { /* 잘못된 주소는 건드리지 않는다. */ }
+  });
 
   // 1) 강의·랜딩 이동 CTA: blog_cta_click (+ 노출 1초 이상이면 cta_view). 헤더 링크는 클릭만 기록한다.
   function addCta(a, withView) {
@@ -44,6 +57,7 @@
   function linkInfo(a) {
     var href = a.getAttribute('href') || '';
     if (!href || href.charAt(0) === '#' || /^(javascript|mailto|tel):/i.test(href)) return null;
+    try { var self = new URL(a.href); if (self.hash && self.origin === location.origin && self.pathname === location.pathname) return null; } catch (e) { return null; } // 같은 글 안의 목차 이동은 기록하지 않는다
     var dest = destination(a);
     if (dest) return { type: 'link_' + dest, target: '' };
     try {

@@ -5,7 +5,7 @@
   "cleanUrls": true,
   "headers": [
     {
-      "source": "/assets/(.*)",
+      "source": "/(assets|wireframe/assets|wireframe/blog/assets)/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

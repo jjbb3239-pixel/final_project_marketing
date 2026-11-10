@@ -43,3 +43,9 @@ ID는 `03_landing_page/index.html` 상단 `window.TRACKING` 두 값만 바꾸면
 - [ ] Meta Pixel Helper / 이벤트 관리자에서 확인
 - [x] UTM 붙은 URL로 접속 시 CTA 링크로 UTM 전달 확인 (11/4). GA4 소스/매체 보고서는 하루 뒤 확인 — GA4 소스/매체 정상 수집
 - [ ] CTA 링크 정상 이동
+
+## 11/10 추가 (랜딩·블로그 코드)
+- UTM 없이 랜딩에 들어온 방문(블로그 경유·직접 방문)의 강의 CTA에는 `utm_source=landing&utm_medium=referral&utm_campaign=finalproject&utm_content=no_utm`이 붙음. 광고 UTM이나 gclid·fbclid가 있으면 붙이지 않음
+- 블로그에서 강의 사이트로 가는 링크에는 `utm_source=petitrich_blog&utm_medium=referral&utm_campaign=finalproject&utm_content=blog_{글 이름}`이 붙음
+- 랜딩의 네이버 카페·유튜브 카드 클릭은 dataLayer 이벤트 `landing_outbound_click`(`cta_location`: cafe / youtube)으로 기록. 전환(`cta_click`)에는 포함되지 않음
+- [ ] GTM에 맞춤 이벤트 트리거 `landing_outbound_click` → GA4 이벤트 태그 추가 후 게시 (추가 전에는 GA4에 보이지 않음)
